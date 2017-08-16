@@ -1,3 +1,4 @@
+
 import java.net.MalformedURLException;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
@@ -5,8 +6,9 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class LobbyServer extends UnicastRemoteObject implements IHelloWorld {
+public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private ArrayList<Player> users;
+    static String ADDRESS = "//192.168.1.7";
 
     private LobbyServer() throws RemoteException {
         this.users = new ArrayList<Player>();
@@ -16,7 +18,7 @@ public class LobbyServer extends UnicastRemoteObject implements IHelloWorld {
     public int register(Player player) throws RemoteException {
         users.add(player);
         try {
-            System.out.println(users.indexOf(player) + " player " + player.name + " connected!\n Address: " + getClientHost());
+            System.out.println("player " + player.name +" #"+ users.indexOf(player) + " connected!\nAddress: " + getClientHost());
         } catch (ServerNotActiveException e) {
             e.printStackTrace();
         }
@@ -39,10 +41,12 @@ public class LobbyServer extends UnicastRemoteObject implements IHelloWorld {
 
 
     public static void main(String[] args) {
+        //System.setProperty("java.rmi.server.hostname",ADDRESS);
+        ADDRESS = "//localhost";
         try {
-            IHelloWorld server = new LobbyServer();
+            ILobby server = new LobbyServer();
             System.out.println("Lobby Server is ONLINE!");
-            Naming.rebind("//localhost/LobbyServer", server);
+            Naming.rebind(ADDRESS + "/LobbyServer", server);
         } catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();
         }
