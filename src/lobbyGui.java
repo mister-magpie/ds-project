@@ -144,9 +144,12 @@ public class lobbyGui {
             e.printStackTrace();
         }
         //update
+        Game.players = users;
+        textArea1.setMargin(new Insets(0,10,5,5));
+
         textArea1.setText("");
         for(Player p : users){
-            textArea1.append(p.name + " - " + p.address);
+            textArea1.append("\n"+p.name + " - " + p.address);
         }
 
     }

@@ -28,7 +28,7 @@ public class Player implements Serializable {
         this.address = "//localhost/"+name;
         this.msgQueue = new ArrayDeque<String>(10);
         this.ready = false;
-        this.position = 1;
+        this.position = 0;
     }
 
 
@@ -38,6 +38,9 @@ public class Player implements Serializable {
     public void setUsername(String name){
         this.name = name;
         this.address = "localhost/"+name;
+    }
+    public void setPosition(int pos){
+        this.position += pos;
     }
 
 

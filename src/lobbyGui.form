@@ -129,7 +129,11 @@
         <children>
           <component id="583f0" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
             <constraints/>
-            <properties/>
+            <properties>
+              <editable value="false"/>
+              <enabled value="true"/>
+              <lineWrap value="false"/>
+            </properties>
             <clientProperties>
               <caretAspectRatio class="java.lang.Float" value="0.04"/>
             </clientProperties>

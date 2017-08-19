@@ -29,7 +29,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         myself = new Player("anonymous");
         lg = new lobbyGui();
         lobbyView = lg.initializeGUI();
-        gg = new gameGui();
+        //gg = new gameGui();
     }
 
 
@@ -68,8 +68,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     static public void initializeTable(){
         System.out.println("initialize table");
-        gameGui gamegui = new gameGui();
-        gameView = gamegui.initializeGUI();
+        gg = new gameGui();
+        gameView = gg.initializeGUI();
         lg.disposeGUI();
 
     }
@@ -88,6 +88,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     @Override
     public void recieveMessage(String name, String msg){
+        System.out.println("msg received\n"+name +": " +msg+"size of queue " + myself.msgQueue.size());
         myself.msgQueue.add(name+": "+msg);
     }
 
@@ -95,9 +96,20 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     @Override
     public void startGame(ArrayList<Player> players, int i) throws RemoteException {
         System.out.println("my definitive index is: " + i +". was "+ myself.idx);
+        Game.players = players;
         myself.setIdx(i);
-        Game.lobby.unregister(players.get(i));
+        //Game.lobby.unregister(players.get(i));
         initializeTable();
+        //gg.initPieces();
+        //if(myself.idx == 0);
+
+    }
+
+    @Override
+    public void updatePosition(int i, int r) throws RemoteException{
+        System.out.println("player " + i + " rolled a " + r +". old position is: " + (players.get(0).position +1));
+        //players.get(i).setPosition(r);
+        gg.move(players.get(i),r);
     }
 }
 
