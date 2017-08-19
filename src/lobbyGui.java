@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.text.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -10,7 +11,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 public class lobbyGui {
-
+    private JFrame frame;
     private JCheckBox readyCheckBox;
     private JTextField lobbyAddressTextField;
     private JButton sendButton;
@@ -20,6 +21,7 @@ public class lobbyGui {
     private JList list1;
     private JTextPane textPane1;
     private JTextField usernameField;
+    private JTextArea textArea1;
 
     public lobbyGui() {
 
@@ -28,7 +30,7 @@ public class lobbyGui {
         printText(
                 "Welcome! This is the lobby client." +
                 "\n" +
-                "Insert your username and the IP of the lobby server and then click Connect",true);
+                "Insert your username and the IP of the lobby server and then click Connect",true,true);
 
 
         sendButton.addActionListener(new ActionListener() {
@@ -36,9 +38,9 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 String msg = chatText.getText();
                 chatText.setText("");
-                for(String pa : Game.playersAddress){
+                for(Player p : Game.players){
                     try {
-                        IPlayerServer ps = (IPlayerServer) Naming.lookup(pa);
+                        IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
                         ps.recieveMessage(Game.myself.name, msg);
                     } catch (NotBoundException | MalformedURLException | RemoteException e) {
                         e.printStackTrace();
@@ -52,30 +54,30 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 String username = usernameField.getText();
                 if(username == null) username = "anonymous";
-                Game.createPlayer(username);
+                Game.myself.setUsername(username);
                 //connectiong phase
                 try {
-                    printText("Connecting...",false);
-                    String lobbyAddr = lobbyAddressTextField.getText();
+                    printText("Connecting...",false,true);
+                    //String lobbyAddr = lobbyAddressTextField.getText();
                     Game.initializeLobby();
                 } catch (RemoteException | NotBoundException | MalformedURLException e) {
                     e.printStackTrace();
                 }
-                printText("ok",true);
+                printText("ok",true,true);
 
                 //registering phase
                 try {
-                    printText("Registering...",false);
+                    printText("Registering...",false,true);
                     Game.register();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-                printText("ok",true);
+                printText("ok",true,true);
                 usernameField.setEditable(false);
                 connectButton.setEnabled(false);
                 //
                 readyCheckBox.setEnabled(true);
-                printText("when you are ready to start check the box",false);
+                printText("when you are ready to start check the box",false,true);
 
                 //update cycles
                 try {
@@ -103,9 +105,9 @@ public class lobbyGui {
                 String msg = chatText.getText();
                 //System.out.println("chattxt.msg->"+msg);
                 chatText.setText("");
-                for(String pa : Game.playersAddress){
+                for(Player p : Game.players){
                     try {
-                        IPlayerServer ps = (IPlayerServer) Naming.lookup(pa);
+                        IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
                         ps.recieveMessage(Game.myself.name, msg);
                     } catch (NotBoundException | MalformedURLException | RemoteException e) {
                         e.printStackTrace();
@@ -121,7 +123,8 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean state = readyCheckBox.isSelected();
                 try {
-                    Game.lobby.setReady(Game.myself.address,state);
+                    Game.lobby.checkReady(Game.myself);
+                    Game.myself.ready = state;
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -134,23 +137,23 @@ public class lobbyGui {
 
 
     private void getUserList(){
-        ArrayList<String> users = new ArrayList<>();
+        ArrayList<Player> users = new ArrayList<>();
         try {
             users = Game.lobby.getPlayers();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        DefaultListModel lm = new DefaultListModel();
-        for(String pa : users){
-            lm.addElement(pa);
+        //update
+        textArea1.setText("");
+        for(Player p : users){
+            textArea1.append(p.name + " - " + p.address);
         }
-        list1.setModel(lm);
 
     }
     private void getChatMessages(){
         String msg = Game.myself.msgQueue.poll();
         if(msg != null){
-            printText(msg,false);
+            printText(msg,false,false);
         }
     }
 
@@ -168,19 +171,24 @@ public class lobbyGui {
     }
 
 
-    public void printText(String text,boolean append) {
+    public void printText(String text,boolean append,boolean bold) {
         StyledDocument d = textPane1.getStyledDocument();
+
+        if(!append) text = "\n" + text;
+
         SimpleAttributeSet as = new SimpleAttributeSet();
         StyleConstants.setBold(as,true);
+
+
         try {
-            if(!append) d.insertString(d.getLength(),"\n" + text,as);
-            if(append) d.insertString(d.getLength(),text,null);
+            if(!bold) d.insertString(d.getLength(),"\n" + text,null);
+            if(bold) d.insertString(d.getLength(),text,as);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
 
-    public void initializeGUI(){
+    public JFrame initializeGUI(){
 
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
             if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
@@ -193,7 +201,7 @@ public class lobbyGui {
             }
         }
 
-        JFrame frame = new JFrame("Lobby Server");
+        frame = new JFrame("Lobby Server");
         frame.setContentPane(new lobbyGui().panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -207,7 +215,7 @@ public class lobbyGui {
                 if(Game.lobby !=null){
                     try {
 
-                        Game.lobby.unregister(Game.myself.address);
+                        Game.lobby.unregister(Game.myself);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
@@ -216,6 +224,11 @@ public class lobbyGui {
                 super.windowClosing(windowEvent);
             }
         });
+        return frame;
+    }
+
+    public void disposeGUI(){
+        frame.setVisible(false);
 
     }
 }

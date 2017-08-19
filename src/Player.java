@@ -10,14 +10,16 @@ import java.util.Deque;
 
 
 
-public class Player extends UnicastRemoteObject implements IPlayerServer {
+public class Player implements Serializable {
     String name;
     //Color color;
     boolean token;
     int idx;
     String address;
+    boolean ready;
     Deque<String> msgQueue;
     Player successor, predecessor;
+    int position;
 
     public Player(String name) throws RemoteException {
         super();
@@ -25,34 +27,18 @@ public class Player extends UnicastRemoteObject implements IPlayerServer {
         this.token = false;
         this.address = "//localhost/"+name;
         this.msgQueue = new ArrayDeque<String>(10);
+        this.ready = false;
+        this.position = 1;
     }
 
 
     public void setIdx(int idx) {
         this.idx = idx;
     }
-
-    @Override
-    public int ping(String name) throws RemoteException {
-        try {
-            System.out.println("ping from " + name + " " + getClientHost());
-            return 1;
-        } catch (ServerNotActiveException e) {
-            e.printStackTrace();
-        }
-        return 0;
+    public void setUsername(String name){
+        this.name = name;
+        this.address = "localhost/"+name;
     }
 
-
-    @Override
-    public void recieveMessage(String name, String msg){
-        //System.out.println("playerserver recieve->"+msg);
-        msgQueue.add(name+": "+msg);
-    }
-
-    @Override
-    public String getName() throws RemoteException {
-        return this.name;
-    }
 
 }

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public interface ILobby extends Remote
 {
-    int register(String name, String playerAddress) throws RemoteException;
-    void unregister(String playerIndex) throws RemoteException;
-    void setReady(String addr,boolean state) throws RemoteException;
-    ArrayList<String> getPlayers() throws RemoteException;
+    int register(Player player) throws RemoteException;
+    void unregister(Player player) throws RemoteException;
+    void checkReady(Player player) throws RemoteException;
+    ArrayList<Player> getPlayers() throws RemoteException;
 }
 
