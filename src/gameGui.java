@@ -13,6 +13,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.Timer;
 
@@ -61,13 +63,10 @@ public class gameGui {
                 //move(Game.myself.idx,dice);
                 for (Player p : Game.players){
                     try {
-                        IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                         ps.updatePosition(Game.myself.idx,dice);
-                    } catch (NotBoundException e) {
-                        e.printStackTrace();
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (RemoteException e) {
+                    } catch (NotBoundException | RemoteException e) {
                         e.printStackTrace();
                     }
                 }
@@ -81,9 +80,10 @@ public class gameGui {
                 messageField.setText("");
                 for(Player p : Game.players){
                     try {
-                        IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                         ps.recieveMessage(Game.myself.name, msg);
-                    } catch (NotBoundException | MalformedURLException | RemoteException e) {
+                    } catch (NotBoundException | RemoteException e) {
                         System.out.println(p.name + " not responding");
                         //e.printStackTrace();
                     }
@@ -93,7 +93,19 @@ public class gameGui {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                String msg = messageField.getText();
+                System.out.println("chattxt.msg->"+msg);
+                messageField.setText("");
+                for(Player p : Game.players){
+                    try {
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                        ps.recieveMessage(Game.myself.name, msg);
+                    } catch (NotBoundException | RemoteException e) {
+                        System.out.println(p.name + " not responding");
+                        //e.printStackTrace();
+                    }
+                }
             }
         });
     }
@@ -145,10 +157,11 @@ public class gameGui {
         String t = "number of user: "+ Game.players.size()+"\n";
         for(Player p : Game.players){
             try {
-                IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
+                Registry reg = LocateRegistry.getRegistry(p.address);
+                IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                 ps.ping(Game.myself.name);
                 t = t.concat("\n" +p.name + " - " + p.address);
-            } catch (NotBoundException | MalformedURLException e) {
+            } catch (NotBoundException  e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
                 System.out.println(p.name + " offline");

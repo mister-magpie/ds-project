@@ -45,7 +45,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
      public static void bindServer(){
         try {
             IPlayerServer ps = new Game();
-            System.out.println(Naming.list("rmi://192.168.1.7"));
+            System.out.println(myself.address+"/"+myself.name);
             Naming.rebind(myself.address+"/"+myself.name, ps);
         } catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();

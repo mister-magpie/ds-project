@@ -61,14 +61,16 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             for (Player u : users.values()){
                 players.add(c,u);
                 System.out.println("player: "+ u.name + " is player #"+c);
+                c++;
             }
 
             for(Player p : players) {
                 try {
                     System.out.println("calling startgame on " + p.idx);
-                    IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
+                    Registry reg = LocateRegistry.getRegistry(p.address);
+                    IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                     ps.startGame(players, players.indexOf(p));
-                } catch (NotBoundException | MalformedURLException e) {
+                } catch (NotBoundException  e) {
                     e.printStackTrace();
                 }
             }
@@ -99,7 +101,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         return  new ArrayList(users.values());
     }
 
-    public void pingUsers() {
+    public synchronized void pingUsers() {
         java.util.Timer t = new Timer();
         t.schedule(new TimerTask(){
             @Override

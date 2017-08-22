@@ -42,9 +42,10 @@ public class lobbyGui {
                 chatText.setText("");
                 for(Player p : Game.players){
                     try {
-                        IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                         ps.recieveMessage(Game.myself.name, msg);
-                    } catch (NotBoundException | MalformedURLException | RemoteException e) {
+                    } catch (NotBoundException | RemoteException e) {
                         e.printStackTrace();
                     }
                 }
