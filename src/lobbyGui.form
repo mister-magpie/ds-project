@@ -19,7 +19,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value=""/>
+          <text value="192.168.1.7"/>
           <toolTipText value="ip of lobby"/>
         </properties>
         <clientProperties>
