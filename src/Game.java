@@ -26,6 +26,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
 
     public static void main(String[] args) throws RemoteException {
+
         myself = new Player("anonymous");
         lg = new lobbyGui();
         lobbyView = lg.initializeGUI();
@@ -37,7 +38,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
      public static void bindServer(){
         try {
             IPlayerServer ps = new Game();
-            Naming.rebind(myself.address, ps);
+            Naming.rebind(myself.address+"/"+myself.name, ps);
         } catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();
         }
@@ -50,12 +51,12 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
 
     static public void register() throws RemoteException {
-        int i = lobby.register(myself);
-        if(i == -1){
+        String a = lobby.register(myself);
+        if(a ==null){
             myself.name = myself.name + String.valueOf(new Random().nextInt(100));
         }
         else {
-            myself.setIdx(i);
+            myself.address = a;
             System.out.println("you have been added with index: " + String.valueOf(myself.idx));
         }
         bindServer();

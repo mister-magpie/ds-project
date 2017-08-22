@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private HashMap<String,Player> users;
-    //static String ADDRESS = "//192.168.1.7";
+    static String ADDRESS = "192.168.1.7";
 
     private LobbyServer() throws RemoteException {
         this.users = new HashMap<>();
@@ -19,18 +19,20 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public int register(Player player) throws RemoteException {
-        if(users.containsKey(player.name)) return -1;//if player of the same name is present prompt a change;
-        player.idx = users.size();
-        users.put(player.name,player);
+    public String register(Player player) throws RemoteException {
+
 
         try {
             System.out.println("player " + player.name +" #"+ player.idx + " connected!\nAddress: " + getClientHost());
+            if(users.containsKey(player.name)) return null;//if player of the same name is present prompt a change;
+            player.idx = users.size();
+            player.address = getClientHost();
+            users.put(player.name,player);
         } catch (ServerNotActiveException e) {
             e.printStackTrace();
         }
 
-        return player.idx;
+        return player.address;
     }
 
     @Override
@@ -119,11 +121,11 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
 
     public static void main(String[] args) {
-        //System.setProperty("java.rmi.server.hostname",ADDRESS);
-        String ADDRESS = "//localhost";
+        System.setProperty("java.rmi.server.hostname",ADDRESS);
+        //String ADDRESS = "//localhost";
         try {
             ILobby server = new LobbyServer();
-            System.out.println("Lobby Server is ONLINE!");
+            System.out.println("Lobby Server is ONLINE on " + ADDRESS);
             Naming.rebind(ADDRESS + "/LobbyServer", server);
         } catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();
