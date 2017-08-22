@@ -25,8 +25,8 @@ public class gameGui {
     JButton rollButton;
     JLabel diceLabel;
     JPanel gamePanel;
-    JTextArea listArea;
-    JTextArea chatArea;
+    JTextPane listArea;
+    JTextPane chatArea;
     JLayeredPane gameMap;
     static HashMap<String,JLabel> pieces;
 
@@ -59,8 +59,8 @@ public class gameGui {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
-                chatArea.append("\n" + Game.myself.name + " rolled a " + String.valueOf(dice));
-                //move(Game.myself.idx,dice);
+                //chatArea.append("\n" + Game.myself.name + " rolled a " + String.valueOf(dice));
+                move(Game.myself, dice);
                 for (Player p : Game.players){
                     try {
                         Registry reg = LocateRegistry.getRegistry(p.address);
@@ -132,9 +132,9 @@ public class gameGui {
     public static void move(Player player,int roll){
 
         Point p = pieces.get(player.name).getLocation();
-        int position = player.position;
-        player.setPosition(roll);
-        System.out.println("new position is " + (player.position +1));
+        int position = player.getPosition();
+        player.updatePosition(roll);
+        System.out.println("new position is " + (player.getPosition() +1));
 
         int x = (roll+position)%10;
         int y = (position+roll)/10;
@@ -144,7 +144,7 @@ public class gameGui {
         else p.x = 740 - 80*x;
 
         if (position + roll >= 100){
-            player.position = 0;
+            player.setPosition(0);
             p.x = 30;
             p.y = 525;
         }
@@ -154,29 +154,43 @@ public class gameGui {
     }
 
     private void getUserList() {
-        String t = "number of user: "+ Game.players.size()+"\n";
+        StyledDocument d = listArea.getStyledDocument();
+        SimpleAttributeSet as = new SimpleAttributeSet();
+        StyleConstants.setBold(as,true);
+        listArea.setText("");
+        try {
+            d.insertString(0,"number of user: "+ Game.players.size()+"\n",as);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
         for(Player p : Game.players){
             try {
                 Registry reg = LocateRegistry.getRegistry(p.address);
                 IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                 ps.ping(Game.myself.name);
-                t = t.concat("\n" +p.name + " - " + p.address);
+
+                d.insertString(d.getLength(),p.name + ": ",null);
+                d.insertString(d.getLength(),p.address,as);
+
+                //t = t.concat("\n" +p.name + " - " + p.address);
             } catch (NotBoundException  e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
                 System.out.println(p.name + " offline");
                 Game.players.remove(p);
                 //e.printStackTrace();
+            } catch (BadLocationException e) {
+                e.printStackTrace();
             }
         }
-        listArea.setText(t);
+
     }
 
     private void getChatMessages(){
         String msg = Game.myself.msgQueue.poll();
         if(msg != null){
             System.out.println("gettin' msg -> " + msg);
-            chatArea.append("\n" + msg);
+            printText(msg,false,false);
         }
     }
 
@@ -189,15 +203,13 @@ public class gameGui {
                 //update chat
                 getChatMessages();
             }
-        },0,100);
+        },0,300);
     }
 
 
     public void printText(String text,boolean append,boolean bold) {
-        System.out.println("printtextcall");
-        chatArea.append(text);
-        /*StyledDocument d = chatArea.getStyledDocument();
-
+        StyledDocument d = chatArea.getStyledDocument();
+        //System.out.println("printtextcall");
         if(!append) text = "\n" + text;
 
         SimpleAttributeSet as = new SimpleAttributeSet();
@@ -208,7 +220,8 @@ public class gameGui {
             if(bold) d.insertString(d.getLength(),text,as);
         } catch (BadLocationException e) {
             e.printStackTrace();
-        }*/
+        }
+        //chatArea.append(text);
     }
 
     public JFrame initializeGUI() {
@@ -225,7 +238,7 @@ public class gameGui {
         }
 
         JFrame frame = new JFrame("Snake and Ladders");
-        frame.setContentPane(new gameGui().panelMain);
+        frame.setContentPane(this.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

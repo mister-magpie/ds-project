@@ -118,9 +118,12 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     @Override
     public void updatePosition(int i, int r) throws RemoteException{
-        System.out.println("player " + i + " rolled a " + r +". old position is: " + (players.get(0).position +1));
-        //players.get(i).setPosition(r);
-        gg.move(players.get(i),r);
+        if (i != myself.idx){
+            System.out.println("player " + i + " rolled a " + r +". old position is: " + (players.get(0).getPosition() +1));
+            //players.get(i).setPosition(r);
+            gg.move(players.get(i),r);
+        }
+        gg.printText(players.get(i).name + " rolled a " + r,false,false);
     }
 }
 

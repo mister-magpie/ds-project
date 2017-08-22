@@ -19,7 +19,7 @@ public class Player implements Serializable {
     boolean ready;
     Deque<String> msgQueue;
     Player successor, predecessor;
-    int position;
+    private int position;
 
     public Player(String name) throws RemoteException {
         super();
@@ -39,9 +39,18 @@ public class Player implements Serializable {
         this.name = name;
         this.address = "localhost/"+name;
     }
-    public void setPosition(int pos){
-        this.position += pos;
+    public void updatePosition(int roll){
+        System.out.println(position);
+        this.position += roll;
+        System.out.println("update position " + position);
+
     }
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
+    public int getPosition() {
+        return position;
+    }
 }

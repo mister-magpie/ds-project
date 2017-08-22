@@ -36,12 +36,13 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="309c1" class="javax.swing.JTextArea" binding="listArea">
+          <component id="ccf77" class="javax.swing.JTextPane" binding="listArea">
             <constraints/>
             <properties>
               <editable value="false"/>
             </properties>
             <clientProperties>
+              <JEditorPane.honorDisplayProperties class="java.lang.Boolean" value="true"/>
               <caretAspectRatio class="java.lang.Float" value="0.04"/>
             </clientProperties>
           </component>
@@ -56,10 +57,11 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="55dbf" class="javax.swing.JTextArea" binding="chatArea">
+          <component id="8c9" class="javax.swing.JTextPane" binding="chatArea">
             <constraints/>
             <properties/>
             <clientProperties>
+              <JEditorPane.honorDisplayProperties class="java.lang.Boolean" value="true"/>
               <caretAspectRatio class="java.lang.Float" value="0.04"/>
             </clientProperties>
           </component>
