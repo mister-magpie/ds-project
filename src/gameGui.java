@@ -52,7 +52,7 @@ public class gameGui {
         listArea.setMargin(new Insets(0,10,10,10));
         printText("Welcome to the game",true,true);
         pieces = initPieces();
-        updateList();
+        //updateList();
 
         //tira dado
         rollButton.addActionListener(new ActionListener() {
@@ -153,7 +153,7 @@ public class gameGui {
 
     }
 
-    private void getUserList() {
+    private void updateUserList() {
         StyledDocument d = listArea.getStyledDocument();
         SimpleAttributeSet as = new SimpleAttributeSet();
         StyleConstants.setBold(as,true);
@@ -170,7 +170,7 @@ public class gameGui {
                 ps.ping(Game.myself.name);
 
                 d.insertString(d.getLength(),p.name + ": ",null);
-                d.insertString(d.getLength(),p.address,as);
+                d.insertString(d.getLength(),p.address + "\n",as);
 
                 //t = t.concat("\n" +p.name + " - " + p.address);
             } catch (NotBoundException  e) {
@@ -194,12 +194,12 @@ public class gameGui {
         }
     }
 
-    public void updateList() {
+    public void updateGui() {
         java.util.Timer t = new Timer();
         t.schedule(new TimerTask(){
             @Override
             public void run(){
-                getUserList(); //not needed as the list can be update when someone becomes unreachable. no new player will connect
+                //getUserList(); //not needed as the list can be update when someone becomes unreachable. no new player will connect
                 //update chat
                 getChatMessages();
             }
@@ -243,6 +243,9 @@ public class gameGui {
         frame.pack();
         frame.setVisible(true);
 
+        chatArea.setEditable(false);
+        listArea.setEditable(false);
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
@@ -252,8 +255,8 @@ public class gameGui {
                 super.windowClosing(windowEvent);
             }
         });
-
-        updateList();
+        updateUserList();
+        updateGui();
         return frame;
     }
 

@@ -53,7 +53,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             System.out.println(p.name+": "+ p.ready +" AND "+ startGame + " = " + startGame);
         }
 
-        if (startGame == true){
+        if (startGame == true && users.size()>=2){
             System.out.println("all ready");
             //mischia i giocatori e manda il segnale di inizio!
             ArrayList<Player> players = new ArrayList<>();

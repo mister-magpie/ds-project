@@ -18,7 +18,7 @@ public class Player implements Serializable {
     String address;
     boolean ready;
     Deque<String> msgQueue;
-    Player successor, predecessor;
+    private Player successor, predecessor;
     private int position;
 
     public Player(String name) throws RemoteException {
@@ -52,5 +52,29 @@ public class Player implements Serializable {
 
     public int getPosition() {
         return position;
+    }
+
+    public boolean isToken() {
+        return token;
+    }
+
+    public void setSuccessor(Player successor) {
+        this.successor = successor;
+    }
+
+    public void setPredecessor(Player predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    public Player getSuccessor() {
+        return successor;
+    }
+
+    public Player getPredecessor() {
+        return predecessor;
+    }
+
+    public void setToken(boolean token) {
+        this.token = token;
     }
 }

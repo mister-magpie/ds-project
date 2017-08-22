@@ -71,10 +71,10 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         bindServer();
 
     }
-    static public void initializeLobby() throws RemoteException, NotBoundException, MalformedURLException {
-        Registry reg = LocateRegistry.getRegistry("192.168.1.7");
+    static public void initializeLobby(String lobbyAddr) throws RemoteException, NotBoundException, MalformedURLException {
+        Registry reg = LocateRegistry.getRegistry(lobbyAddr);
         System.out.println("Connecting to Lobby");
-        lobby =  (ILobby) reg.lookup ("192.168.1.7/LobbyServer");
+        lobby =  (ILobby) reg.lookup (lobbyAddr+"/LobbyServer");
     }
 
     static public void initializeTable(){
@@ -99,21 +99,32 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     @Override
     public void recieveMessage(String name, String msg){
-        System.out.println("msg received\n"+name +": " +msg+"size of queue " + myself.msgQueue.size());
+        //System.out.println("msg received\n"+name +": " +msg+"size of queue " + myself.msgQueue.size());
         myself.msgQueue.add(name+": "+msg);
     }
 
 
     @Override
     public void startGame(ArrayList<Player> players, int i) throws RemoteException {
-        System.out.println("my definitive index is: " + i +". was "+ myself.idx);
+        //System.out.println("my definitive index is: " + i +". was "+ myself.idx);
         Game.players = players;
         myself.setIdx(i);
-        //Game.lobby.unregister(players.get(i));
+        Game.lobby.unregister(players.get(i));
         initializeTable();
         //gg.initPieces();
-        //if(myself.idx == 0);
+        if(i == 0){
+            System.out.println("i'm first");
+            Game.myself.setToken(true);
+        }
+        Game.myself.setPredecessor(players.get((i-1)%players.size()));
+        Game.myself.setSuccessor(players.get((i+1)%players.size()));
+        gg.printText("it's " +players.get(0)+"'s turn.",false,true);
+    }
 
+    @Override
+    public void makeTurn() throws RemoteException {
+        gg.printText("it's" + Game.myself.name+"'s turn.",false,true);
+        Game.myself.setToken(true);
     }
 
     @Override

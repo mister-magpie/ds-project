@@ -38,17 +38,7 @@ public class lobbyGui {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String msg = chatText.getText();
-                chatText.setText("");
-                for(Player p : Game.players){
-                    try {
-                        Registry reg = LocateRegistry.getRegistry(p.address);
-                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                        ps.recieveMessage(Game.myself.name, msg);
-                    } catch (NotBoundException | RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
+                sendMessage();
             }
         });
 
@@ -61,8 +51,8 @@ public class lobbyGui {
                 //connectiong phase
                 try {
                     printText("Connecting...",false,true);
-                    //String lobbyAddr = lobbyAddressTextField.getText();
-                    Game.initializeLobby();
+                    String lobbyAddr = lobbyAddressTextField.getText();
+                    Game.initializeLobby(lobbyAddr);
                 } catch (RemoteException | NotBoundException | MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -105,18 +95,7 @@ public class lobbyGui {
         chatText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String msg = chatText.getText();
-                //System.out.println("chattxt.msg->"+msg);
-                chatText.setText("");
-                for(Player p : Game.players){
-                    try {
-                        Registry reg = LocateRegistry.getRegistry(p.address);
-                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                        ps.recieveMessage(Game.myself.name, msg);
-                    } catch (NotBoundException  | RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
+                sendMessage();
             }
         });
 
@@ -139,6 +118,19 @@ public class lobbyGui {
 
     }
 
+    private void sendMessage(){
+        String msg = chatText.getText();
+        chatText.setText("");
+        for(Player p : Game.players){
+            try {
+                Registry reg = LocateRegistry.getRegistry(p.address);
+                IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                ps.recieveMessage(Game.myself.name, msg);
+            } catch (NotBoundException | RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void getUserList(){
         ArrayList<Player> users = new ArrayList<>();

@@ -19,7 +19,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="//localhost/LobbyServer"/>
+          <text value=""/>
           <toolTipText value="ip of lobby"/>
         </properties>
         <clientProperties>
