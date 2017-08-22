@@ -106,7 +106,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                     try {
                         ps = (IPlayerServer) Naming.lookup(u.address);
                         ps.ping("lobbyserver");
-                                            } catch (NotBoundException | MalformedURLException e) {
+                    } catch (NotBoundException | MalformedURLException e) {
                         e.printStackTrace();
                     } catch (RemoteException e) {
                         System.out.println(u.name + " not responding!");
