@@ -15,7 +15,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
     private LobbyServer() throws RemoteException {
         this.users = new HashMap<>();
-        pingUsers();
+        //pingUsers();
     }
 
     @Override
@@ -51,19 +51,19 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
         if (startGame == true){
             System.out.println("all ready");
-            //mischia i giocatori e manda il segnale di inizio!
-            ArrayList<Player> players = new ArrayList<>();
+            //ordina i giocatori e manda il segnale di inizio!
             int c = 0;
             for (Player u : users.values()){
-                players.add(c,u);
+                u.idx = c;
                 System.out.println("player: "+ u.name + " is player #"+c);
+                c++;
             }
 
-            for(Player p : players) {
+            for(Player p : users.values()) {
                 try {
                     System.out.println("calling startgame on " + p.idx);
                     IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
-                    ps.startGame(players, players.indexOf(p));
+                    ps.startGame(users);
                 } catch (NotBoundException | MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -72,7 +72,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public ArrayList<Player> getPlayers() {
+    public HashMap<String, Player> getPlayers() {
 
         for(Player p : users.values()){
             try {
@@ -91,7 +91,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
         }
 
-        return  new ArrayList(users.values());
+        return  users;
     }
 
     public void pingUsers() {
@@ -122,9 +122,9 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         //System.setProperty("java.rmi.server.hostname",ADDRESS);
         String ADDRESS = "//localhost";
         try {
-            ILobby server = new LobbyServer();
-            System.out.println("Lobby Server is ONLINE!");
+            ILobby server = (ILobby) new LobbyServer();
             Naming.rebind(ADDRESS + "/LobbyServer", server);
+            System.out.println("Lobby Server is ONLINE!");
         } catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();
         }

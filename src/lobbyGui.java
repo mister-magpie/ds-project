@@ -6,7 +6,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TimerTask;
 import java.util.Timer;
 
@@ -22,15 +22,14 @@ public class lobbyGui {
     private JTextPane textPane1;
     private JTextField usernameField;
     private JTextArea textArea1;
+    private Game game;
+    private Player myself;
 
-    public lobbyGui() {
+    public lobbyGui(Game game) {
+        this.game = game;
+        this.myself = game.getMyself();
 
-        readyCheckBox.setEnabled(false);
 
-        printText(
-                "Welcome! This is the lobby client." +
-                "\n" +
-                "Insert your username and the IP of the lobby server and then click Connect",true,true);
 
 
         sendButton.addActionListener(new ActionListener() {
@@ -38,10 +37,10 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 String msg = chatText.getText();
                 chatText.setText("");
-                for(Player p : Game.players){
+                for(Player p : game.players.values()){
                     try {
                         IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
-                        ps.recieveMessage(Game.myself.name, msg);
+                        ps.recieveMessage(myself.name, msg);
                     } catch (NotBoundException | MalformedURLException | RemoteException e) {
                         e.printStackTrace();
                     }
@@ -54,13 +53,14 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 String username = usernameField.getText();
                 if(username == null) username = "anonymous";
-                Game.myself.setUsername(username);
+                myself.setUsername(username);
                 //connectiong phase
                 try {
+                    System.out.println("welcome " + myself.name);
                     printText("Connecting...",false,true);
                     //String lobbyAddr = lobbyAddressTextField.getText();
-                    Game.initializeLobby();
-                } catch (RemoteException | NotBoundException | MalformedURLException e) {
+                    game.connectToLobby();
+                } catch (RemoteException e) {
                     e.printStackTrace();
                 }
                 printText("ok",true,true);
@@ -68,7 +68,7 @@ public class lobbyGui {
                 //registering phase
                 try {
                     printText("Registering...",false,true);
-                    Game.register();
+                    game.register();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -81,7 +81,7 @@ public class lobbyGui {
 
                 //update cycles
                 try {
-                    Game.getUsers();
+                    game.getUsers();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -105,10 +105,10 @@ public class lobbyGui {
                 String msg = chatText.getText();
                 //System.out.println("chattxt.msg->"+msg);
                 chatText.setText("");
-                for(Player p : Game.players){
+                for(Player p : game.players.values()){
                     try {
                         IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
-                        ps.recieveMessage(Game.myself.name, msg);
+                        ps.recieveMessage(myself.name, msg);
                     } catch (NotBoundException | MalformedURLException | RemoteException e) {
                         e.printStackTrace();
                     }
@@ -123,8 +123,8 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean state = readyCheckBox.isSelected();
                 try {
-                    Game.lobby.checkReady(Game.myself);
-                    Game.myself.ready = state;
+                    game.lobby.checkReady(myself);
+                    myself.ready = state;
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -137,24 +137,26 @@ public class lobbyGui {
 
 
     private void getUserList(){
-        ArrayList<Player> users = new ArrayList<>();
+        HashMap<String,Player> users = new HashMap<>();
         try {
-            users = Game.lobby.getPlayers();
+            users = game.lobby.getPlayers();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         //update
-        Game.players = users;
+        game.players = users;
         textArea1.setMargin(new Insets(0,10,5,5));
 
         textArea1.setText("");
-        for(Player p : users){
+        for(Player p : users.values()){
             textArea1.append("\n"+p.name + " - " + p.address);
         }
 
     }
     private void getChatMessages(){
-        String msg = Game.myself.msgQueue.poll();
+        String msg = myself.getLastMessage();
+        System.out.println(myself.name +" "+myself.getMessageQueue().size());
+
         if(msg != null){
             printText(msg,false,false);
         }
@@ -165,6 +167,7 @@ public class lobbyGui {
         t.schedule(new TimerTask(){
             @Override
             public void run(){
+                //System.out.println("updates");
                 //update userlist
                 getUserList();
                 //update chat
@@ -191,7 +194,7 @@ public class lobbyGui {
         }
     }
 
-    public JFrame initializeGUI(){
+    public JFrame initializeGUI(lobbyGui lG){
 
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
             if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
@@ -204,21 +207,26 @@ public class lobbyGui {
             }
         }
 
-        frame = new JFrame("Lobby Server");
-        frame.setContentPane(new lobbyGui().panelMain);
+        frame = new JFrame("Lobby - Snake and Ladders");
+        frame.setContentPane(lG.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        readyCheckBox.setEnabled(false);
+        printText(
+                "Welcome! This is the lobby client." +
+                        "\n" +
+                        "Insert your username and the IP of the lobby server and then click Connect",true,true);
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
                 System.out.println("chiudo tutto");
 
-                if(Game.lobby !=null){
+                if(game.lobby !=null){
                     try {
 
-                        Game.lobby.unregister(Game.myself);
+                        game.lobby.unregister(myself);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
