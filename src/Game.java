@@ -109,16 +109,16 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         //System.out.println("my definitive index is: " + i +". was "+ myself.idx);
         Game.players = players;
         myself.setIdx(i);
-        Game.lobby.unregister(players.get(i));
+        //Game.lobby.unregister(players.get(i));
         initializeTable();
         //gg.initPieces();
         if(i == 0){
             System.out.println("i'm first");
             Game.myself.setToken(true);
         }
-        Game.myself.setPredecessor(players.get((i-1)%players.size()));
+        Game.myself.setPredecessor(players.get(i + (players.size() - 1)%players.size() ));
         Game.myself.setSuccessor(players.get((i+1)%players.size()));
-        gg.printText("it's " +players.get(0)+"'s turn.",false,true);
+        gg.printText("it's " +Game.players.get(0)+"'s turn.",false,true);
     }
 
     @Override

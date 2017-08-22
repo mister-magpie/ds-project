@@ -81,20 +81,18 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     public synchronized ArrayList<Player> getPlayers() {
 
         for(Player p : users.values()){
-            try {
-                IPlayerServer ps;
                 try {
                     Registry reg = LocateRegistry.getRegistry(p.address);
-                    ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                    IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                     ps.ping("lobbyserver");
                 } catch (RemoteException e) {
                     System.out.println(p.name + " not responding!");
                     users.remove(p.name);
                     //e.printStackTrace();
+                }catch (NotBoundException e) {
+                    System.out.println("not bound!");
+                    //e.printStackTrace();
                 }
-            } catch (NotBoundException e) {
-                e.printStackTrace();
-            }
             //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
         }
 
@@ -113,7 +111,9 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                         ps = (IPlayerServer) reg.lookup(u.address+"/"+u.name);
                         ps.ping("lobbyserver");
                     } catch (NotBoundException e) {
-                        e.printStackTrace();
+                        System.out.println("no bound!");
+                        users.remove(u.name);
+                        //e.printStackTrace();
                     } catch (RemoteException e) {
                         System.out.println(u.name + " not responding!");
                         users.remove(u.name);
@@ -130,10 +130,11 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         System.setProperty("java.rmi.server.hostname",ADDRESS);
         //String ADDRESS = "//localhost";
         try {
+            Registry reg = LocateRegistry.getRegistry(ADDRESS);
             ILobby server = new LobbyServer();
             System.out.println("Lobby Server is ONLINE on " + ADDRESS);
-            Naming.rebind(ADDRESS + "/LobbyServer", server);
-        } catch (RemoteException | MalformedURLException e) {
+            reg.rebind(ADDRESS + "/LobbyServer", server);
+        } catch (RemoteException  e) {
             e.printStackTrace();
         }
     }
