@@ -1,5 +1,7 @@
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.Naming;
@@ -80,14 +82,15 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             try {
                 IPlayerServer ps;
                 try {
-                    ps = (IPlayerServer) Naming.lookup(p.address);
+                    Registry reg = LocateRegistry.getRegistry(p.address);
+                    ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                     ps.ping("lobbyserver");
                 } catch (RemoteException e) {
                     System.out.println(p.name + " not responding!");
                     users.remove(p.name);
                     //e.printStackTrace();
                 }
-            } catch (NotBoundException | MalformedURLException e) {
+            } catch (NotBoundException e) {
                 e.printStackTrace();
             }
             //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
@@ -104,9 +107,10 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                 for(Player u : users.values()){
                     IPlayerServer ps = null;
                     try {
-                        ps = (IPlayerServer) Naming.lookup(u.address);
+                        Registry reg = LocateRegistry.getRegistry(u.address);
+                        ps = (IPlayerServer) reg.lookup(u.address+"/"+u.name);
                         ps.ping("lobbyserver");
-                                            } catch (NotBoundException | MalformedURLException e) {
+                    } catch (NotBoundException e) {
                         e.printStackTrace();
                     } catch (RemoteException e) {
                         System.out.println(u.name + " not responding!");
