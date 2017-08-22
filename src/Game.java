@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     static gameGui gg;
     static JFrame lobbyView;
     static JFrame gameView;
+
+
 
     protected Game() throws RemoteException {
         super();
@@ -63,8 +67,9 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     }
     static public void initializeLobby() throws RemoteException, NotBoundException, MalformedURLException {
+        Registry reg = LocateRegistry.getRegistry("192.168.1.7");
         System.out.println("Connecting to Lobby");
-        lobby =  (ILobby) Naming.lookup ("rmi://localhost/LobbyServer");
+        lobby =  (ILobby) reg.lookup ("192.168.1.7/LobbyServer");
     }
 
     static public void initializeTable(){
