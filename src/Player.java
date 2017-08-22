@@ -25,7 +25,7 @@ public class Player implements Serializable {
         super();
         this.name = name;
         this.token = false;
-        this.address = "//localhost/"+name;
+        this.address = "localhost";
         this.msgQueue = new ArrayDeque<String>(10);
         this.ready = false;
         this.position = 0;

@@ -76,7 +76,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public ArrayList<Player> getPlayers() {
+    public synchronized ArrayList<Player> getPlayers() {
 
         for(Player p : users.values()){
             try {

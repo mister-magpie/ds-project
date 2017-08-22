@@ -1,3 +1,4 @@
+import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -30,6 +31,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
 
     public static void main(String[] args) throws RemoteException {
+        //if(args.length >= 1) System.setProperty("java.rmi.server.hostname",args[0]);
+        //else System.setProperty("java.rmi.server.hostname","192.168.1.7");
 
         myself = new Player("anonymous");
         lg = new lobbyGui();
@@ -42,6 +45,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
      public static void bindServer(){
         try {
             IPlayerServer ps = new Game();
+            System.out.println(Naming.list("rmi://192.168.1.7"));
             Naming.rebind(myself.address+"/"+myself.name, ps);
         } catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();
@@ -63,6 +67,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
             myself.address = a;
             System.out.println("you have been added with index: " + String.valueOf(myself.idx));
         }
+        System.setProperty("java.rmi.server.hostname",a);
         bindServer();
 
     }
