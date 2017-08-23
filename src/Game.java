@@ -44,10 +44,12 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
      public static void bindServer(){
         try {
-            IPlayerServer ps = new Game();
+            Registry reg = LocateRegistry.getRegistry(myself.address);
+            IPlayerServer ps =  new Game();
             System.out.println(myself.address+"/"+myself.name);
-            Naming.rebind(myself.address+"/"+myself.name, ps);
-        } catch (RemoteException | MalformedURLException e) {
+            reg.rebind(myself.address+"/"+myself.name, ps);
+        } catch (RemoteException  e) {
+            System.out.println("cannot bind");
             e.printStackTrace();
         }
     }

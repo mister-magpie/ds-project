@@ -71,10 +71,12 @@ public class gameGui {
                     }
                 }
                 try {
+                    Game.myself.setToken(false);
                     Player suc = Game.myself.getSuccessor();
                     Registry reg = LocateRegistry.getRegistry(suc.address);
                     IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
                     ps.makeTurn();
+
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (NotBoundException e) {
