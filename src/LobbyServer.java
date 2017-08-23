@@ -1,3 +1,5 @@
+import com.sun.jndi.rmi.registry.RegistryContext;
+
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
@@ -130,7 +132,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         System.setProperty("java.rmi.server.hostname",ADDRESS);
         //String ADDRESS = "//localhost";
         try {
-            Registry reg = LocateRegistry.getRegistry(ADDRESS);
+            Registry reg = LocateRegistry.createRegistry(1099);
             ILobby server = new LobbyServer();
             System.out.println("Lobby Server is ONLINE on " + ADDRESS);
             reg.rebind(ADDRESS + "/LobbyServer", server);

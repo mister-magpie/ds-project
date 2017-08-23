@@ -73,6 +73,7 @@ public class gameGui {
                 try {
                     Game.myself.setToken(false);
                     Player suc = Game.myself.getSuccessor();
+                    if (suc == null) System.out.println("nosuc");
                     Registry reg = LocateRegistry.getRegistry(suc.address);
                     IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
                     ps.makeTurn();
@@ -128,7 +129,7 @@ public class gameGui {
         HashMap<String, JLabel> pcs = new HashMap<String, JLabel>();
         for(Player p : Game.players){
 
-            System.out.println(p.name);
+            //System.out.println(p.name);
 
             ImageIcon icon = new ImageIcon(gameMap.getClass().getResource("/pawn"+p.idx+".png"));
             JLabel pwn = new JLabel(icon);
@@ -138,7 +139,7 @@ public class gameGui {
             gameMap.add(pwn,new Integer(1+p.idx));
             pcs.put(p.name,pwn);
         }
-        System.out.println(pcs.size());
+        //System.out.println(pcs.size());
         return pcs;
     }
 
@@ -172,7 +173,7 @@ public class gameGui {
         StyleConstants.setBold(as,true);
         listArea.setText("");
         try {
-            d.insertString(0,"number of user: "+ Game.players.size()+"\n",as);
+            d.insertString(0,"number of user: "+ Game.players.size()+"\n---\n",as);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
@@ -182,8 +183,8 @@ public class gameGui {
                 IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                 ps.ping(Game.myself.name);
 
-                d.insertString(d.getLength(),p.name + ": ",null);
-                d.insertString(d.getLength(),p.address + "\n",as);
+                d.insertString(d.getLength(),p.name + ": ",as);
+                d.insertString(d.getLength(),p.address + "\n",null);
 
                 //t = t.concat("\n" +p.name + " - " + p.address);
             } catch (NotBoundException  e) {

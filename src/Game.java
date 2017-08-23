@@ -46,7 +46,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         try {
             Registry reg = LocateRegistry.getRegistry(myself.address);
             IPlayerServer ps =  new Game();
-            System.out.println(myself.address+"/"+myself.name);
+            //System.out.println(myself.address+"/"+myself.name);
             reg.rebind(myself.address+"/"+myself.name, ps);
         } catch (RemoteException  e) {
             System.out.println("cannot bind");
@@ -118,21 +118,23 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
             System.out.println("i'm first");
             Game.myself.setToken(true);
         }
-        Game.myself.setPredecessor(players.get(i + (players.size() - 1)%players.size() ));
+        int p = (i + players.size() - 1)%players.size();
+        System.out.println("pred is:" + p);
+        Game.myself.setPredecessor( players.get(p));
         Game.myself.setSuccessor(players.get((i+1)%players.size()));
-        gg.printText("it's " +Game.players.get(0)+"'s turn.",false,true);
+        gg.printText("it's " +Game.players.get(0).name +"'s turn.",false,true);
     }
 
     @Override
     public void makeTurn() throws RemoteException {
-        gg.printText("it's" + Game.myself.name+"'s turn.",false,true);
+        gg.printText("it's " + Game.myself.name+"'s turn.",false,true);
         Game.myself.setToken(true);
     }
 
     @Override
     public void updatePosition(int i, int r) throws RemoteException{
         if (i != myself.idx){
-            System.out.println("player " + i + " rolled a " + r +". old position is: " + (players.get(0).getPosition() +1));
+            //System.out.println("player " + i + " rolled a " + r +". old position is: " + (players.get(0).getPosition() +1));
             //players.get(i).setPosition(r);
             gg.move(players.get(i),r);
         }
