@@ -36,7 +36,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="309c1" class="javax.swing.JTextArea" binding="listArea">
+          <component id="309c1" class="javax.swing.JTextPane" binding="listArea">
             <constraints/>
             <properties>
               <editable value="false"/>
@@ -56,7 +56,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="55dbf" class="javax.swing.JTextArea" binding="chatArea">
+          <component id="55dbf" class="javax.swing.JTextPane" binding="chatArea">
             <constraints/>
             <properties/>
             <clientProperties>

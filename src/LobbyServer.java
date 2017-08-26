@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private HashMap<String,Player> users;
-    static String ADDRESS = "192.168.1.7";
+    static String ADDRESS = "25.72.70.109";
 
     private LobbyServer() throws RemoteException {
         this.users = new HashMap<>();
@@ -22,7 +22,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     public Player register(Player player) throws RemoteException {
 
         try {
-            System.out.println("player " + player.name + " connected!\nAddress: " + getClientHost());
+            System.out.println("player " + player.name + " connected! Address: " + getClientHost());
             if(users.containsKey(player.name)){
                 System.out.println("duplicate name");
                 return null;//if player of the same name is present prompt a change;
@@ -127,7 +127,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
     public static void main(String[] args) {
         System.setProperty("java.rmi.server.hostname",ADDRESS);
-        //String ADDRESS = "//localhost";
+        if(args.length >= 1) ADDRESS = args[0];
         try {
             Registry reg = LocateRegistry.createRegistry(1099);
             ILobby server = new LobbyServer();
