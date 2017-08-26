@@ -12,14 +12,15 @@ public class Player implements Serializable {
     int idx;
     String address;
     boolean ready;
-    ArrayDeque<String> msgQueue;
-    Player successor, predecessor;
-    int position;
+    Deque<String> msgQueue;
+    private Player successor, predecessor;
+    private int position;
 
     public Player(String name) throws RemoteException {
+        super();
         this.name = name;
         this.token = false;
-        this.address = "//localhost/"+name;
+        this.address = "localhost";
         this.msgQueue = new ArrayDeque<String>(10);
         this.ready = false;
         this.position = 0;
@@ -30,34 +31,46 @@ public class Player implements Serializable {
         this.idx = idx;
     }
     public void setUsername(String name){
-        System.out.println("set username " + name);
+        System.out.println("set username call");
         this.name = name;
         this.address = "localhost/"+name;
     }
+    public void updatePosition(int roll){
+        System.out.println(position);
+        this.position += roll;
+        System.out.println("update position " + position);
 
-    public int getPosition() {
-        return position;
     }
 
     public void setPosition(int position) {
         this.position = position;
     }
 
-    public void updatePosition(int roll){
-        System.out.println("updateposition: "+ (position+1) +" "+(position+roll+1));
-        int p = position+roll;
-        position = p;
-        System.out.println("new position: " + (position +1));
-    }
-    public ArrayDeque<String> getMessageQueue(){
-        System.out.println("get msg q");
-        return msgQueue;
-    }
-    public String getLastMessage(){
-        return msgQueue.poll();
-    }
-    public void addMessage(String msg){
-        msgQueue.add(msg);
+    public int getPosition() {
+        return position;
     }
 
+    public boolean isToken() {
+        return token;
+    }
+
+    public void setSuccessor(Player successor) {
+        this.successor = successor;
+    }
+
+    public void setPredecessor(Player predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    public Player getSuccessor() {
+        return successor;
+    }
+
+    public Player getPredecessor() {
+        return predecessor;
+    }
+
+    public void setToken(boolean token) {
+        this.token = token;
+    }
 }

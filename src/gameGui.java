@@ -1,14 +1,19 @@
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.Timer;
 
@@ -19,15 +24,17 @@ public class gameGui {
     JButton rollButton;
     JLabel diceLabel;
     JPanel gamePanel;
-    JTextArea listArea;
-    JTextArea chatArea;
+    JTextPane listArea;
+    JTextPane chatArea;
     JLayeredPane gameMap;
     HashMap<String,JLabel> pieces;
-    Game game;
+    Game G;
+
+    public gameGui(Game game){
 
 
-    public gameGui(Game g){
-        game = g;
+        this.G = game;
+
         gamePanel.setLayout(null);
         gamePanel.setMinimumSize(new Dimension(800,600));
         gamePanel.setBounds(0,0,800,600);
@@ -55,31 +62,43 @@ public class gameGui {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
-                chatArea.append("\n" + game.myself.name + " rolled a " + String.valueOf(dice));
-                for (Player p : game.players.values()){
+                //chatArea.append("\n" + G.myself.name + " rolled a " + String.valueOf(dice));
+                move(G.myself, dice);
+                for (Player p : G.players){
                     try {
-                        IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
-                        ps.updatePosition(game.myself.name,game.myself.position, dice);
-                    } catch (NotBoundException | RemoteException | MalformedURLException e) {
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                        ps.updatePosition(G.myself.idx,dice);
+                    } catch (NotBoundException | RemoteException e) {
                         e.printStackTrace();
                     }
                 }
-                //game.myself.updatePosition(dice);
+                try {
+                    G.myself.setToken(false);
+                    Player suc = G.myself.getSuccessor();
+                    if (suc == null) System.out.println("nosuc");
+                    Registry reg = LocateRegistry.getRegistry(suc.address);
+                    IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
+                    ps.makeTurn();
+
+                } catch (RemoteException | NotBoundException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
-
         messageField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String msg = messageField.getText();
-                //System.out.println("chattxt.msg->"+msg);
+                System.out.println("chattxt.msg->"+msg);
                 messageField.setText("");
-
-                for(Player p : game.players.values()){
+                for(Player p : G.players){
                     try {
-                        IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
-                        ps.recieveMessage(game.myself.name, msg);
-                    } catch (NotBoundException | MalformedURLException | RemoteException e) {
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                        ps.recieveMessage(G.myself.name, msg);
+                    } catch (NotBoundException | RemoteException e) {
                         System.out.println(p.name + " not responding");
                         //e.printStackTrace();
                     }
@@ -89,7 +108,19 @@ public class gameGui {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                String msg = messageField.getText();
+                System.out.println("chattxt.msg->"+msg);
+                messageField.setText("");
+                for(Player p : G.players){
+                    try {
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                        ps.recieveMessage(G.myself.name, msg);
+                    } catch (NotBoundException | RemoteException e) {
+                        System.out.println(p.name + " not responding");
+                        //e.printStackTrace();
+                    }
+                }
             }
         });
     }
@@ -97,8 +128,7 @@ public class gameGui {
     public HashMap<String, JLabel> initPieces(){
         System.out.println("init pieces");
         HashMap<String, JLabel> pcs = new HashMap<String, JLabel>();
-
-        for(Player p : game.players.values()){
+        for(Player p : G.players){
 
             //System.out.println(p.name);
 
@@ -110,103 +140,138 @@ public class gameGui {
             gameMap.add(pwn,new Integer(1+p.idx));
             pcs.put(p.name,pwn);
         }
-
         //System.out.println(pcs.size());
         return pcs;
     }
 
-    public void move(String name, int roll){
+    public void move(Player player,int roll){
+        System.out.println(player.name);
+        Point p = pieces.get(player.name).getLocation();
+        int position = player.getPosition();
+        player.updatePosition(roll);
+        System.out.println("new position is " + (player.getPosition() +1));
 
-        Point p = pieces.get(name).getLocation();
-        int position = game.players.get(name).getPosition();
-        System.out.println(name + ": " + position);
-        game.players.get(name).setPosition(position);
-
-
-        int x = (position)%10;
-        int y = (position)/10;
+        int x = (roll+position)%10;
+        int y = (position+roll)/10;
 
         p.y = 525 - 60*y;
         if(y%2 == 0) p.x = 20 + 80*x;
         else p.x = 740 - 80*x;
 
-        if (position >= 100){
-            game.players.get(name).setPosition(0);
+        if (position + roll >= 100){
+            player.setPosition(0);
             p.x = 30;
             p.y = 525;
         }
-
-        //System.out.println(p.x + " " + p.y);
-        pieces.get(name).setLocation(p);
+        System.out.println(p.x + " " +p.y);
+        pieces.get(player.name).setLocation(p);
 
     }
 
-    private void getUserList() {
-        String t = "number of user: "+ game.players.size()+"\n";
-        for(Player p : game.players.values()){
+    private void updateUserList() {
+        StyledDocument d = listArea.getStyledDocument();
+        SimpleAttributeSet as = new SimpleAttributeSet();
+        StyleConstants.setBold(as,true);
+        listArea.setText("");
+        try {
+            d.insertString(0,"number of user: "+ G.players.size()+"\n---\n",as);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        for(Player p : G.players){
             try {
-                IPlayerServer ps = (IPlayerServer) Naming.lookup(p.address);
-                ps.ping(game.myself.name);
-                t = t.concat("\n" +p.name + " - " + p.address);
-            } catch (NotBoundException | MalformedURLException e) {
+                Registry reg = LocateRegistry.getRegistry(p.address);
+                IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                ps.ping(G.myself.name, p.idx);
+
+                d.insertString(d.getLength(),p.name + ": ",as);
+                d.insertString(d.getLength(),p.address + "\n",null);
+
+                //t = t.concat("\n" +p.name + " - " + p.address);
+            } catch (NotBoundException  e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
                 System.out.println(p.name + " offline");
-                game.players.remove(p);
+                G.players.remove(p);
                 //e.printStackTrace();
+            } catch (BadLocationException e) {
+                e.printStackTrace();
             }
         }
-        listArea.setText(t);
+
     }
 
     private void getChatMessages(){
-        String msg = game.myself.msgQueue.poll();
+        String msg = G.myself.msgQueue.poll();
         if(msg != null){
-            //System.out.println("gettin' msg -> " + msg);
+            System.out.println("gettin' msg -> " + msg);
             printText(msg,false,false);
-            //chatArea.append("\n" + msg);
         }
     }
 
-    public void updateList() {
+    public void updateGui() {
         java.util.Timer t = new Timer();
         t.schedule(new TimerTask(){
             @Override
             public void run(){
-                //System.out.println("update");
                 //getUserList(); //not needed as the list can be update when someone becomes unreachable. no new player will connect
                 //update chat
                 getChatMessages();
             }
-        },0,200);
+        },0,300);
     }
 
 
     public void printText(String text,boolean append,boolean bold) {
-        //System.out.println("printtextcall" +  text);
-        if (append)chatArea.append(text);
-        else chatArea.append("\n" + text);
+        StyledDocument d = chatArea.getStyledDocument();
+        //System.out.println("printtextcall");
+        if(!append) text = "\n" + text;
+
+        SimpleAttributeSet as = new SimpleAttributeSet();
+        StyleConstants.setBold(as,true);
+
+        try {
+            if(!bold) d.insertString(d.getLength(),text,null);
+            if(bold) d.insertString(d.getLength(),text,as);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        //chatArea.append(text);
     }
 
     public JFrame initializeGUI() {
+
+        /*for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
+                try {
+                    UIManager.setLookAndFeel(info.getClassName());
+                } catch (ClassNotFoundException | IllegalAccessException | UnsupportedLookAndFeelException | InstantiationException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }*/
+
         JFrame frame = new JFrame("Snake and Ladders");
         frame.setContentPane(this.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
+        chatArea.setEditable(false);
+        listArea.setEditable(false);
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
                 System.out.println("chiudo tutto");
 
+
                 super.windowClosing(windowEvent);
             }
         });
-        if (game.myself.token = false){
-            rollButton.setEnabled(false);
-        }
-        updateList();
+        updateUserList();
+        updateGui();
         return frame;
     }
 
