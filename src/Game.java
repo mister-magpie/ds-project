@@ -15,27 +15,31 @@ import java.util.Random;
 
 public class Game extends UnicastRemoteObject implements IPlayerServer{
 
-    static ILobby lobby;
-    static Player myself;
+    ILobby lobby;
+    Player myself;
     ArrayList<Player> players;
-    static lobbyGui lg;
-    static gameGui gg;
+    lobbyGui lg;
+    gameGui gg;
 
 
 
 
     protected Game() throws RemoteException {
         players = new ArrayList<>();
+        myself = new Player("anonymous");
 
     }
 
 
     public static void main(String[] args) throws RemoteException {
         Game G = new Game();
-        myself = new Player("anonymous");
-        lg = new lobbyGui(G);
-        lg.initializeGUI();
+        G.lg = new lobbyGui(G);
+        G.lg.initializeGUI();
         //gg = new gameGui();
+    }
+
+    public Player getMyself() {
+        return myself;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -46,7 +50,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         this.players = players;
     }
 
-    public static void bindServer(){
+    public void bindServer(){
          try {
              LocateRegistry.createRegistry(1099);
          } catch (RemoteException e) {
@@ -63,13 +67,13 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         }
     }
 
-     public void getUsers() throws RemoteException {
+    public void getUsers() throws RemoteException {
         //System.out.println("retrieving players list");
         players = lobby.getPlayers();
     }
 
 
-    static public void register() throws RemoteException {
+    public void register() throws RemoteException {
         String a = lobby.register(myself);
         if(a ==null){
             myself.name = myself.name + String.valueOf(new Random().nextInt(100));
@@ -125,19 +129,19 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         //gg.initPieces();
         if(i == 0){
             System.out.println("i'm first");
-            Game.myself.setToken(true);
+            myself.setToken(true);
         }
         int pred = (i + players.size() - 1)%players.size();
         System.out.println("pred is:" + pred);
-        Game.myself.setPredecessor( players.get(pred));
-        Game.myself.setSuccessor(players.get((i+1)%players.size()));
+        myself.setPredecessor( players.get(pred));
+        myself.setSuccessor(players.get((i+1)%players.size()));
         gg.printText("it's " +players.get(0).name +"'s turn.",false,true);
     }
 
     @Override
     public void makeTurn() throws RemoteException {
-        gg.printText("it's " + Game.myself.name+"'s turn.",false,true);
-        Game.myself.setToken(true);
+        gg.printText("it's " + myself.name+"'s turn.",false,true);
+        myself.setToken(true);
     }
 
     @Override
