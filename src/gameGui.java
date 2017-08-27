@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -60,7 +58,7 @@ public class gameGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
                 //chatArea.append("\n" + Game.myself.name + " rolled a " + String.valueOf(dice));
-                move(Game.myself, dice);
+                move(Game.myself.idx, dice);
                 for (Player p : Game.players){
                     try {
                         Registry reg = LocateRegistry.getRegistry(p.address);
@@ -143,27 +141,25 @@ public class gameGui {
         return pcs;
     }
 
-    public static void move(Player player,int roll){
+    public static void move(int i, int position){
 
-        Point p = pieces.get(player.name).getLocation();
-        int position = player.getPosition();
-        player.updatePosition(roll);
-        System.out.println("new position is " + (player.getPosition() +1));
+        Point p = pieces.get(Game.players.get(i).name).getLocation();
+        System.out.println("new position is " + (position +1));
 
-        int x = (roll+position)%10;
-        int y = (position+roll)/10;
+        int x = (position)%10;
+        int y = (position)/10;
 
         p.y = 525 - 60*y;
         if(y%2 == 0) p.x = 20 + 80*x;
         else p.x = 740 - 80*x;
 
-        if (position + roll >= 100){
-            player.setPosition(0);
+        if (position >= 100){
+            Game.players.get(i).setPosition(0);
             p.x = 30;
             p.y = 525;
         }
         System.out.println(p.x + " " +p.y);
-        pieces.get(player.name).setLocation(p);
+        pieces.get(Game.players.get(i).name).setLocation(p);
 
     }
 

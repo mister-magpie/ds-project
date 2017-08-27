@@ -136,7 +136,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         if (i != myself.idx){
             //System.out.println("player " + i + " rolled a " + r +". old position is: " + (players.get(0).getPosition() +1));
             //players.get(i).setPosition(r);
-            gg.move(players.get(i),r);
+            players.get(i).updatePosition(r);
+            gg.move(i,players.get(i).getPosition());
         }
         gg.printText(players.get(i).name + " rolled a " + r,false,false);
     }
