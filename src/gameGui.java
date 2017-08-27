@@ -58,7 +58,7 @@ public class gameGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
                 //chatArea.append("\n" + Game.myself.name + " rolled a " + String.valueOf(dice));
-                move(Game.myself.idx, dice);
+                move(Game.myself.idx, Game.myself.updatePosition(dice));
                 for (Player p : Game.players){
                     try {
                         Registry reg = LocateRegistry.getRegistry(p.address);

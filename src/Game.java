@@ -43,7 +43,12 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
 
      public static void bindServer(){
-        try {
+         try {
+             LocateRegistry.createRegistry(1099);
+         } catch (RemoteException e) {
+             //e.printStackTrace();
+         }
+         try {
             Registry reg = LocateRegistry.getRegistry(myself.address);
             IPlayerServer ps =  new Game();
             //System.out.println(myself.address+"/"+myself.name);
