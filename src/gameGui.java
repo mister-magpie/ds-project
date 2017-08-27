@@ -27,9 +27,10 @@ public class gameGui {
     JTextPane chatArea;
     JLayeredPane gameMap;
     static HashMap<String,JLabel> pieces;
+    Game G;
 
-
-    public gameGui(){
+    public gameGui(Game game){
+        this.G = game;
         gamePanel.setLayout(null);
         gamePanel.setMinimumSize(new Dimension(800,600));
         gamePanel.setBounds(0,0,800,600);
@@ -57,20 +58,20 @@ public class gameGui {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
-                //chatArea.append("\n" + Game.myself.name + " rolled a " + String.valueOf(dice));
-                move(Game.myself.idx, Game.myself.updatePosition(dice));
-                for (Player p : Game.players){
+                //chatArea.append("\n" + G.myself.name + " rolled a " + String.valueOf(dice));
+                move(G.myself.idx, G.myself.updatePosition(dice));
+                for (Player p : G.getPlayers()){
                     try {
                         Registry reg = LocateRegistry.getRegistry(p.address);
                         IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                        ps.updatePosition(Game.myself.idx,dice);
+                        ps.updatePosition(G.myself.idx,dice);
                     } catch (NotBoundException | RemoteException e) {
                         e.printStackTrace();
                     }
                 }
                 try {
-                    Game.myself.setToken(false);
-                    Player suc = Game.myself.getSuccessor();
+                    G.myself.setToken(false);
+                    Player suc = G.myself.getSuccessor();
                     if (suc == null) System.out.println("nosuc");
                     Registry reg = LocateRegistry.getRegistry(suc.address);
                     IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
@@ -90,11 +91,11 @@ public class gameGui {
                 String msg = messageField.getText();
                 System.out.println("chattxt.msg->"+msg);
                 messageField.setText("");
-                for(Player p : Game.players){
+                for(Player p : G.players){
                     try {
                         Registry reg = LocateRegistry.getRegistry(p.address);
                         IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                        ps.recieveMessage(Game.myself.name, msg);
+                        ps.recieveMessage(G.myself.name, msg);
                     } catch (NotBoundException | RemoteException e) {
                         System.out.println(p.name + " not responding");
                         //e.printStackTrace();
@@ -108,11 +109,11 @@ public class gameGui {
                 String msg = messageField.getText();
                 System.out.println("chattxt.msg->"+msg);
                 messageField.setText("");
-                for(Player p : Game.players){
+                for(Player p : G.players){
                     try {
                         Registry reg = LocateRegistry.getRegistry(p.address);
                         IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                        ps.recieveMessage(Game.myself.name, msg);
+                        ps.recieveMessage(G.myself.name, msg);
                     } catch (NotBoundException | RemoteException e) {
                         System.out.println(p.name + " not responding");
                         //e.printStackTrace();
@@ -125,7 +126,7 @@ public class gameGui {
     public HashMap<String, JLabel> initPieces(){
         System.out.println("init pieces");
         HashMap<String, JLabel> pcs = new HashMap<String, JLabel>();
-        for(Player p : Game.players){
+        for(Player p : G.players){
 
             //System.out.println(p.name);
 
@@ -141,9 +142,9 @@ public class gameGui {
         return pcs;
     }
 
-    public static void move(int i, int position){
+    public void move(int i, int position){
 
-        Point p = pieces.get(Game.players.get(i).name).getLocation();
+        Point p = pieces.get(G.players.get(i).name).getLocation();
         System.out.println("new position is " + (position +1));
 
         int x = (position)%10;
@@ -154,12 +155,12 @@ public class gameGui {
         else p.x = 740 - 80*x;
 
         if (position >= 100){
-            Game.players.get(i).setPosition(0);
+            G.players.get(i).setPosition(0);
             p.x = 30;
             p.y = 525;
         }
-        System.out.println(p.x + " " +p.y);
-        pieces.get(Game.players.get(i).name).setLocation(p);
+        //System.out.println(p.x + " " +p.y);
+        pieces.get(G.players.get(i).name).setLocation(p);
 
     }
 
@@ -169,15 +170,15 @@ public class gameGui {
         StyleConstants.setBold(as,true);
         listArea.setText("");
         try {
-            d.insertString(0,"number of user: "+ Game.players.size()+"\n---\n",as);
+            d.insertString(0,"number of user: "+ G.players.size()+"\n---\n",as);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-        for(Player p : Game.players){
+        for(Player p : G.players){
             try {
                 Registry reg = LocateRegistry.getRegistry(p.address);
                 IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                ps.ping(Game.myself.name);
+                ps.ping(G.myself.name);
 
                 d.insertString(d.getLength(),p.name + ": ",as);
                 d.insertString(d.getLength(),p.address + "\n",null);
@@ -187,7 +188,7 @@ public class gameGui {
                 e.printStackTrace();
             } catch (RemoteException e) {
                 System.out.println(p.name + " offline");
-                Game.players.remove(p);
+                G.players.remove(p);
                 //e.printStackTrace();
             } catch (BadLocationException e) {
                 e.printStackTrace();
@@ -197,7 +198,7 @@ public class gameGui {
     }
 
     private void getChatMessages(){
-        String msg = Game.myself.msgQueue.poll();
+        String msg = G.myself.msgQueue.poll();
         if(msg != null){
             System.out.println("gettin' msg -> " + msg);
             printText(msg,false,false);

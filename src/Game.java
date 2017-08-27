@@ -17,36 +17,40 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     static ILobby lobby;
     static Player myself;
-    static ArrayList<Player> players;
+    ArrayList<Player> players;
     static lobbyGui lg;
     static gameGui gg;
-    static JFrame lobbyView;
-    static JFrame gameView;
+
 
 
 
     protected Game() throws RemoteException {
-        super();
+        players = new ArrayList<>();
+
     }
 
 
     public static void main(String[] args) throws RemoteException {
-        //if(args.length >= 1) System.setProperty("java.rmi.server.hostname",args[0]);
-        //else System.setProperty("java.rmi.server.hostname","192.168.1.7");
-
+        Game G = new Game();
         myself = new Player("anonymous");
-        lg = new lobbyGui();
-        lobbyView = lg.initializeGUI();
+        lg = new lobbyGui(G);
+        lg.initializeGUI();
         //gg = new gameGui();
     }
 
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
 
-     public static void bindServer(){
+    public static void bindServer(){
          try {
              LocateRegistry.createRegistry(1099);
          } catch (RemoteException e) {
-             //e.printStackTrace();
+             //ge.printStackTrace();
          }
          try {
             Registry reg = LocateRegistry.getRegistry(myself.address);
@@ -59,7 +63,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         }
     }
 
-    static public void getUsers() throws RemoteException {
+     public void getUsers() throws RemoteException {
         //System.out.println("retrieving players list");
         players = lobby.getPlayers();
     }
@@ -78,16 +82,16 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         bindServer();
 
     }
-    static public void initializeLobby(String lobbyAddr) throws RemoteException, NotBoundException, MalformedURLException {
+    public void initializeLobby(String lobbyAddr) throws RemoteException, NotBoundException, MalformedURLException {
         Registry reg = LocateRegistry.getRegistry(lobbyAddr);
         System.out.println("Connecting to Lobby");
         lobby =  (ILobby) reg.lookup (lobbyAddr+"/LobbyServer");
     }
 
-    static public void initializeTable(){
+    public void initializeTable(){
         System.out.println("initialize table");
-        gg = new gameGui();
-        gameView = gg.initializeGUI();
+        gg = new gameGui(this);
+        gg.initializeGUI();
         lg.disposeGUI();
 
     }
@@ -112,9 +116,9 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
 
     @Override
-    public void startGame(ArrayList<Player> players, int i) throws RemoteException {
+    public void startGame(ArrayList<Player> p, int i) throws RemoteException {
         //System.out.println("my definitive index is: " + i +". was "+ myself.idx);
-        Game.players = players;
+        players = p;
         myself.setIdx(i);
         //Game.lobby.unregister(players.get(i));
         initializeTable();
@@ -123,11 +127,11 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
             System.out.println("i'm first");
             Game.myself.setToken(true);
         }
-        int p = (i + players.size() - 1)%players.size();
-        System.out.println("pred is:" + p);
-        Game.myself.setPredecessor( players.get(p));
+        int pred = (i + players.size() - 1)%players.size();
+        System.out.println("pred is:" + pred);
+        Game.myself.setPredecessor( players.get(pred));
         Game.myself.setSuccessor(players.get((i+1)%players.size()));
-        gg.printText("it's " +Game.players.get(0).name +"'s turn.",false,true);
+        gg.printText("it's " +players.get(0).name +"'s turn.",false,true);
     }
 
     @Override
@@ -139,9 +143,9 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     @Override
     public void updatePosition(int i, int r) throws RemoteException{
         if (i != myself.idx){
-            //System.out.println("player " + i + " rolled a " + r +". old position is: " + (players.get(0).getPosition() +1));
-            //players.get(i).setPosition(r);
+            System.out.println("player " + i + " rolled a " + r +".\nold position is: " + (players.get(i).getPosition() +1));
             players.get(i).updatePosition(r);
+            System.out.println("new position: "+ players.get(i).getPosition());
             gg.move(i,players.get(i).getPosition());
         }
         gg.printText(players.get(i).name + " rolled a " + r,false,false);

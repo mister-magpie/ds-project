@@ -3,7 +3,6 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -24,9 +23,10 @@ public class lobbyGui {
     private JTextPane textPane1;
     private JTextField usernameField;
     private JTextArea textArea1;
+    Game G;
 
-    public lobbyGui() {
-
+    public lobbyGui(Game game) {
+        this.G = game;
         readyCheckBox.setEnabled(false);
 
         printText(
@@ -47,13 +47,13 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 String username = usernameField.getText();
                 if(username == null) username = "anonymous";
-                Game.myself.setUsername(username);
+                G.myself.setUsername(username);
                 //connectiong phase
                 try {
                     printText("Connecting...",false,true);
                     String lobbyAddr = lobbyAddressTextField.getText();
                     lobbyAddr = "25.72.70.109";
-                    Game.initializeLobby(lobbyAddr);
+                    G.initializeLobby(lobbyAddr);
                 } catch (RemoteException | NotBoundException | MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -62,7 +62,7 @@ public class lobbyGui {
                 //registering phase
                 try {
                     printText("Registering...",false,true);
-                    Game.register();
+                    G.register();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -75,7 +75,7 @@ public class lobbyGui {
 
                 //update cycles
                 try {
-                    Game.getUsers();
+                    G.getUsers();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -107,8 +107,8 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean state = readyCheckBox.isSelected();
                 try {
-                    Game.lobby.checkReady(Game.myself);
-                    Game.myself.ready = state;
+                    G.lobby.checkReady(G.myself);
+                    G.myself.ready = state;
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -122,11 +122,11 @@ public class lobbyGui {
     private void sendMessage(){
         String msg = chatText.getText();
         chatText.setText("");
-        for(Player p : Game.players){
+        for(Player p : G.players){
             try {
                 Registry reg = LocateRegistry.getRegistry(p.address);
                 IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                ps.recieveMessage(Game.myself.name, msg);
+                ps.recieveMessage(G.myself.name, msg);
             } catch (NotBoundException | RemoteException e) {
                 e.printStackTrace();
             }
@@ -136,12 +136,12 @@ public class lobbyGui {
     private void getUserList(){
         ArrayList<Player> users = new ArrayList<>();
         try {
-            users = Game.lobby.getPlayers();
+            users = G.lobby.getPlayers();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         //update
-        Game.players = users;
+        G.players = users;
         textArea1.setMargin(new Insets(0,10,5,5));
 
         textArea1.setText("");
@@ -151,7 +151,7 @@ public class lobbyGui {
 
     }
     private void getChatMessages(){
-        String msg = Game.myself.msgQueue.poll();
+        String msg = G.myself.msgQueue.poll();
         if(msg != null){
             printText(msg,false,false);
         }
@@ -202,7 +202,7 @@ public class lobbyGui {
         }
 
         frame = new JFrame("Lobby Server");
-        frame.setContentPane(new lobbyGui().panelMain);
+        frame.setContentPane(new lobbyGui(G).panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -212,10 +212,10 @@ public class lobbyGui {
             public void windowClosing(WindowEvent windowEvent) {
                 System.out.println("chiudo tutto");
 
-                if(Game.lobby !=null){
+                if(G.lobby !=null){
                     try {
 
-                        Game.lobby.unregister(Game.myself);
+                        G.lobby.unregister(G.myself);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }

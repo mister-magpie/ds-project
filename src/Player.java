@@ -35,7 +35,7 @@ public class Player implements Serializable {
         this.address = "localhost/"+name;
     }
     public int updatePosition(int roll){
-        System.out.println(position);
+        //System.out.println(position);
         this.position += roll;
         System.out.println(this.name +": update position " + position);
         return position;
