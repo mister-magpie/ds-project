@@ -22,9 +22,6 @@
           <text value="192.168.1.7"/>
           <toolTipText value="ip of lobby"/>
         </properties>
-        <clientProperties>
-          <caretAspectRatio class="java.lang.Float" value="0.04"/>
-        </clientProperties>
       </component>
       <component id="a33f5" class="javax.swing.JButton" binding="connectButton" default-binding="true">
         <constraints>
@@ -44,6 +41,7 @@
           </grid>
         </constraints>
         <properties>
+          <enabled value="false"/>
           <text value="Send"/>
         </properties>
       </component>
@@ -63,7 +61,6 @@
             </properties>
             <clientProperties>
               <JEditorPane.honorDisplayProperties class="java.lang.Boolean" value="true"/>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
             </clientProperties>
           </component>
         </children>
@@ -75,9 +72,6 @@
           </grid>
         </constraints>
         <properties/>
-        <clientProperties>
-          <caretAspectRatio class="java.lang.Float" value="0.04"/>
-        </clientProperties>
       </component>
       <component id="dfdd" class="javax.swing.JLabel">
         <constraints>
@@ -108,9 +102,6 @@
         <properties>
           <toolTipText value="you can send messages"/>
         </properties>
-        <clientProperties>
-          <caretAspectRatio class="java.lang.Float" value="0.04"/>
-        </clientProperties>
       </component>
       <component id="4e60c" class="javax.swing.JCheckBox" binding="readyCheckBox" default-binding="true">
         <constraints>
@@ -134,9 +125,6 @@
               <enabled value="true"/>
               <lineWrap value="false"/>
             </properties>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
         </children>
       </scrollpane>
