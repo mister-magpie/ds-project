@@ -69,6 +69,7 @@ public class gameGui {
                         e.printStackTrace();
                     }
                 }
+                //passa il turno
                 try {
                     G.myself.setToken(false);
                     Player suc = G.myself.getSuccessor();
@@ -76,7 +77,7 @@ public class gameGui {
                     Registry reg = LocateRegistry.getRegistry(suc.address);
                     IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
                     ps.makeTurn();
-
+                    rollButton.setEnabled(false);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (NotBoundException e) {
