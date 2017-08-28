@@ -15,31 +15,24 @@ import java.util.Random;
 
 public class Game extends UnicastRemoteObject implements IPlayerServer{
 
-    ILobby lobby;
-    Player myself;
+    static ILobby lobby;
+    static Player myself;
     ArrayList<Player> players;
-    lobbyGui lg;
-    gameGui gg;
-
-
-
+    static lobbyGui lg;
+    static gameGui gg;
 
     protected Game() throws RemoteException {
         players = new ArrayList<>();
-        myself = new Player("anonymous");
 
     }
 
 
     public static void main(String[] args) throws RemoteException {
         Game G = new Game();
-        G.lg = new lobbyGui(G);
-        G.lg.initializeGUI();
+        myself = new Player("anonymous");
+        lg = new lobbyGui(G);
+        lg.initializeGUI();
         //gg = new gameGui();
-    }
-
-    public Player getMyself() {
-        return myself;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -50,13 +43,13 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         this.players = players;
     }
 
-    public void bindServer(){
-         try {
-             LocateRegistry.createRegistry(1099);
-         } catch (RemoteException e) {
-             //ge.printStackTrace();
-         }
-         try {
+    public static void bindServer(){
+        try {
+            LocateRegistry.createRegistry(1099);
+        } catch (RemoteException e) {
+            //ge.printStackTrace();
+        }
+        try {
             Registry reg = LocateRegistry.getRegistry(myself.address);
             IPlayerServer ps =  new Game();
             //System.out.println(myself.address+"/"+myself.name);
@@ -73,7 +66,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     }
 
 
-    public void register() throws RemoteException {
+    static public void register() throws RemoteException {
         String a = lobby.register(myself);
         if(a ==null){
             myself.name = myself.name + String.valueOf(new Random().nextInt(100));
@@ -129,30 +122,61 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         //gg.initPieces();
         if(i == 0){
             System.out.println("i'm first");
-            myself.setToken(true);
+            Game.myself.setToken(true);
+            gg.setRollButtonEnabled(true);
         }
         int pred = (i + players.size() - 1)%players.size();
         System.out.println("pred is:" + pred);
-        myself.setPredecessor( players.get(pred));
-        myself.setSuccessor(players.get((i+1)%players.size()));
+        Game.myself.setPredecessor( players.get(pred));
+        Game.myself.setSuccessor(players.get((i+1)%players.size()));
         gg.printText("it's " +players.get(0).name +"'s turn.",false,true);
     }
 
     @Override
     public void makeTurn() throws RemoteException {
-        gg.printText("it's " + myself.name+"'s turn.",false,true);
-        myself.setToken(true);
+        gg.printText("It's " + Game.myself.name+"'s turn.",false,true);
+
+        Game.myself.setToken(true);
+        gg.setRollButtonEnabled(true);
+
+        for(Player p : players)
+        {
+            //if (p.idx != myself.idx)
+            if(!myself.equals(p))
+            {
+                try
+                {
+                    Registry      reg = LocateRegistry.getRegistry(p.address);
+                    IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                    ps.notifyTurn(myself.name);
+                }
+                catch (NotBoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void notifyTurn(String name) throws RemoteException
+    {
+        gg.printText("It's " + name + "'s turn.",false,true);
     }
 
     @Override
     public void updatePosition(int i, int r) throws RemoteException{
+
         if (i != myself.idx){
             System.out.println("player " + i + " rolled a " + r +".\nold position is: " + (players.get(i).getPosition() +1));
-            players.get(i).updatePosition(r);
+
+            players.get(i).updatePosition(r); //
+
+            //System.out.println("Nuova posizione per " + players.get(i).name + " è " + newPosition);
             System.out.println("new position: "+ players.get(i).getPosition());
+
             gg.move(i,players.get(i).getPosition());
         }
         gg.printText(players.get(i).name + " rolled a " + r,false,false);
     }
 }
-

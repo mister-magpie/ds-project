@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -58,6 +60,7 @@ public class gameGui {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
+                //int dice = 87;
                 //chatArea.append("\n" + G.myself.name + " rolled a " + String.valueOf(dice));
                 move(G.myself.idx, G.myself.updatePosition(dice));
                 for (Player p : G.getPlayers()){
@@ -82,7 +85,7 @@ public class gameGui {
                 } catch (NotBoundException e) {
                     e.printStackTrace();
                 }
-
+                rollButton.setEnabled(false);
             }
         });
         messageField.addActionListener(new ActionListener() {
@@ -101,6 +104,33 @@ public class gameGui {
                         //e.printStackTrace();
                     }
                 }
+            }
+        });
+
+        messageField.getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent)
+            {
+                if (!sendButton.isEnabled())
+                {
+                    sendButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent)
+            {
+                if (messageField.getText().isEmpty())
+                {
+                    sendButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent)
+            {
+
             }
         });
         sendButton.addActionListener(new ActionListener() {
@@ -235,9 +265,14 @@ public class gameGui {
         //chatArea.append(text);
     }
 
+    public void setRollButtonEnabled(boolean enabled)
+    {
+        rollButton.setEnabled(enabled);
+    }
+
     public JFrame initializeGUI() {
 
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+        /*for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
             if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
                 try {
                     UIManager.setLookAndFeel(info.getClassName());
@@ -247,8 +282,27 @@ public class gameGui {
                 break;
             }
         }
-
-        JFrame frame = new JFrame("Snake and Ladders");
+*/        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // If Nimbus is not available, you can set the GUI to another look and feel.
+            // Set cross-platform Java L&F (also called "Metal")
+            try
+            {
+                UIManager.setLookAndFeel(
+                        UIManager.getCrossPlatformLookAndFeelClassName());
+            }
+            catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+        JFrame frame = new JFrame("Snake and Ladders " + "[" + G.myself.name + "]");
         frame.setContentPane(this.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -272,4 +326,3 @@ public class gameGui {
     }
 
 }
-

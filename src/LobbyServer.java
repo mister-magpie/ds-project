@@ -15,7 +15,7 @@ import java.util.TimerTask;
 
 public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private HashMap<String,Player> users;
-    static String ADDRESS = "25.72.70.109";
+    static String ADDRESS = "127.0.0.1";
 
     private LobbyServer() throws RemoteException {
         this.users = new HashMap<>();
@@ -83,18 +83,18 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     public synchronized ArrayList<Player> getPlayers() {
 
         for(Player p : users.values()){
-                try {
-                    Registry reg = LocateRegistry.getRegistry(p.address);
-                    IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                    ps.ping("lobbyserver");
-                } catch (RemoteException e) {
-                    System.out.println(p.name + " not responding!");
-                    users.remove(p.name);
-                    //e.printStackTrace();
-                }catch (NotBoundException e) {
-                    System.out.println("not bound!");
-                    //e.printStackTrace();
-                }
+            try {
+                Registry reg = LocateRegistry.getRegistry(p.address);
+                IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
+                ps.ping("lobbyserver");
+            } catch (RemoteException e) {
+                System.out.println(p.name + " not responding!");
+                users.remove(p.name);
+                //e.printStackTrace();
+            }catch (NotBoundException e) {
+                System.out.println("not bound!");
+                //e.printStackTrace();
+            }
             //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
         }
 
@@ -141,4 +141,3 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         }
     }
 }
-
