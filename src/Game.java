@@ -96,6 +96,10 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         System.out.println("initialize table");
         gg = new gameGui(this);
         gg.initializeGUI();
+        if (myself.token == false){
+            System.out.println("not my turn");
+            gg.rollButton.setEnabled(false);
+        }
         lg.disposeGUI();
 
     }

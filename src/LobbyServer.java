@@ -15,7 +15,9 @@ import java.util.TimerTask;
 
 public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private HashMap<String,Player> users;
-    static String ADDRESS = "25.72.70.109";
+    //static String ADDRESS = "25.72.70.109";
+    static String ADDRESS = "192.168.1.7";
+
 
     private LobbyServer() throws RemoteException {
         this.users = new HashMap<>();
