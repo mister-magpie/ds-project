@@ -91,7 +91,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                     ps.ping("lobbyserver");
                 } catch (RemoteException e) {
                     System.out.println(p.name + " not responding!");
-                    users.remove(p.name);
+                    //users.remove(p.name);
                     //e.printStackTrace();
                 }catch (NotBoundException e) {
                     System.out.println("not bound!");

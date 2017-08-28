@@ -141,6 +141,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     @Override
     public void makeTurn() throws RemoteException {
         gg.printText("it's " + Game.myself.name+"'s turn.",false,true);
+        gg.rollButton.setEnabled(true);
         Game.myself.setToken(true);
     }
 
