@@ -92,10 +92,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         System.out.println("initialize table");
         gg = new gameGui(this);
         gg.initializeGUI();
-        if (myself.token == false){
-            System.out.println("not my turn");
-            gg.rollButton.setEnabled(false);
-        }
+
         lg.disposeGUI();
 
     }
@@ -130,6 +127,10 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         if(i == 0){
             System.out.println("i'm first");
             Game.myself.setToken(true);
+            gg.rollButton.setEnabled(true);
+        }else{
+            System.out.println("not my turn");
+            gg.rollButton.setEnabled(false);
         }
         int pred = (i + players.size() - 1)%players.size();
         System.out.println("pred is:" + pred);
