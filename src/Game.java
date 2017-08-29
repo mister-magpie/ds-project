@@ -165,6 +165,14 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     }
 
     @Override
+    public void notifyWin(int playerIndex) throws RemoteException
+    {
+        //JOptionPane.showMessageDialog(null, "Game Over! " + players.get(playerIndex).name + " wins!\nIl tuo punteggio è " + (myself.getPosition() + 1));
+        gg.printText("GAME OVER! Ha vinto " + players.get(playerIndex).name, false, true);
+        gg.setRollButtonEnabled(false);
+    }
+
+    @Override
     public void updatePosition(int i, int r) throws RemoteException{
 
         if (i != myself.idx){

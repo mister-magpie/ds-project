@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.scripts.JO;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -60,9 +62,10 @@ public class gameGui {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
-                //int dice = 87;
+                //int dice = 99;
                 //chatArea.append("\n" + G.myself.name + " rolled a " + String.valueOf(dice));
                 move(G.myself.idx, G.myself.updatePosition(dice));
+
                 for (Player p : G.getPlayers()){
                     try {
                         Registry reg = LocateRegistry.getRegistry(p.address);
@@ -86,6 +89,34 @@ public class gameGui {
                     e.printStackTrace();
                 }
                 rollButton.setEnabled(false);
+
+                int position = G.myself.getPosition();
+
+                if (position == 99)
+                {
+                    for(Player p : G.getPlayers())
+                    {
+                        if (p.idx != G.myself.idx)
+                        {
+                            try
+                            {
+                                Registry      reg = LocateRegistry.getRegistry(p.address);
+                                IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                                ps.notifyWin(G.myself.idx);
+                                //System.out.println("Ho terminato di notificare la mia vittoria");
+                            }
+                            catch (RemoteException | NotBoundException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    printText("Congratulations " + G.myself.name + ", YOU WIN!", false,true);
+                    JOptionPane.showMessageDialog(null, "Game Over!", "YOU WIN!", JOptionPane.NO_OPTION);
+                }
+
+
             }
         });
         messageField.addActionListener(new ActionListener() {
@@ -191,7 +222,6 @@ public class gameGui {
         }
         //System.out.println(p.x + " " +p.y);
         pieces.get(G.players.get(i).name).setLocation(p);
-
     }
 
     private void updateUserList() {
