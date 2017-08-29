@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -100,7 +102,32 @@ public class lobbyGui {
             }
         });
 
+        chatText.getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent)
+            {
+                if (!sendButton.isEnabled())
+                {
+                    sendButton.setEnabled(true);
+                }
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent)
+            {
+                if (chatText.getText().isEmpty())
+                {
+                    sendButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent)
+            {
+
+            }
+        });
 
         readyCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -190,7 +217,7 @@ public class lobbyGui {
 
     public JFrame initializeGUI(){
 
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+        /*for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
             if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
                 try {
                     UIManager.setLookAndFeel(info.getClassName());
@@ -199,8 +226,27 @@ public class lobbyGui {
                 }
                 break;
             }
+        }*/
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // If Nimbus is not available, you can set the GUI to another look and feel.
+            // Set cross-platform Java L&F (also called "Metal")
+            try
+            {
+                UIManager.setLookAndFeel(
+                        UIManager.getCrossPlatformLookAndFeelClassName());
+            }
+            catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1)
+            {
+                e1.printStackTrace();
+            }
         }
-
         frame = new JFrame("Lobby Server");
         frame.setContentPane(new lobbyGui(G).panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

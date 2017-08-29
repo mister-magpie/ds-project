@@ -21,9 +21,6 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     static lobbyGui lg;
     static gameGui gg;
 
-
-
-
     protected Game() throws RemoteException {
         players = new ArrayList<>();
 
@@ -141,9 +138,42 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     @Override
     public void makeTurn() throws RemoteException {
-        gg.printText("it's " + Game.myself.name+"'s turn.",false,true);
-        gg.rollButton.setEnabled(true);
+        gg.printText("It's " + Game.myself.name+"'s turn.",false,true);
+
         Game.myself.setToken(true);
+        gg.setRollButtonEnabled(true);
+
+        for(Player p : players)
+        {
+            //if (p.idx != myself.idx)
+            if(!myself.equals(p))
+            {
+                try
+                {
+                    Registry      reg = LocateRegistry.getRegistry(p.address);
+                    IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                    ps.notifyTurn(myself.name);
+                }
+                catch (NotBoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void notifyTurn(String name) throws RemoteException
+    {
+        gg.printText("It's " + name + "'s turn.",false,true);
+    }
+
+    @Override
+    public void notifyWin(int playerIndex) throws RemoteException
+    {
+        //JOptionPane.showMessageDialog(null, "Game Over! " + players.get(playerIndex).name + " wins!\nIl tuo punteggio è " + (myself.getPosition() + 1));
+        gg.printText("GAME OVER! Ha vinto " + players.get(playerIndex).name, false, true);
+        gg.setRollButtonEnabled(false);
     }
 
     @Override
@@ -157,4 +187,3 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         gg.printText(players.get(i).name + " rolled a " + r,false,false);
     }
 }
-

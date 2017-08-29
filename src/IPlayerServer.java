@@ -8,4 +8,6 @@ public interface IPlayerServer extends Remote{
     void startGame(ArrayList<Player> players, int i) throws RemoteException;
     void updatePosition(int playerIndex, int roll) throws RemoteException;
     void makeTurn() throws RemoteException;
+    void notifyTurn(String name) throws RemoteException;
+    void notifyWin(int playerIndex) throws RemoteException;
 }
