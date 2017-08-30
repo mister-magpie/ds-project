@@ -98,6 +98,9 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                     System.out.println("not bound!");
                     //e.printStackTrace();
                 }
+                catch (ServerNotActiveException e) {
+                    e.printStackTrace();
+                }
             //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
         }
 
@@ -124,6 +127,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                         users.remove(u.name);
                         //e.printStackTrace();
                     }
+                    catch (ServerNotActiveException e){e.printStackTrace();}
 
                 }
             }

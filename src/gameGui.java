@@ -11,6 +11,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ServerNotActiveException;
 import java.util.*;
 import java.util.Timer;
 
@@ -292,6 +293,7 @@ public class gameGui {
             } catch (BadLocationException e) {
                 e.printStackTrace();
             }
+            catch (ServerNotActiveException e) {e.printStackTrace();}
         }
 
     }
@@ -332,6 +334,7 @@ public class gameGui {
             e.printStackTrace();
         }
         //chatArea.append(text);
+        chatArea.setCaretPosition(chatArea.getDocument().getLength());
     }
 
     public void setRollButtonEnabled(boolean enabled)
@@ -377,13 +380,14 @@ public class gameGui {
         frame.pack();
         frame.setVisible(true);
 
-        chatAreaScrollPane.setWheelScrollingEnabled(true);
+        /*chatAreaScrollPane.setWheelScrollingEnabled(true);*/
+
 
         // Autoscroll
-        chatAreaScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+        /*chatAreaScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-            }});
+            }});*/
 
         chatArea.setEditable(false);
         listArea.setEditable(false);
