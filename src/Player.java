@@ -146,18 +146,12 @@ public class Player implements Serializable {
 
         Player player = (Player) o;
 
-        if (idx != player.idx)
-        {
-            return false;
-        }
-        return name.equals(player.name);
+        return name != null ? name.equals(player.name) : player.name == null;
     }
 
     @Override
     public int hashCode()
     {
-        int result = name.hashCode();
-        result = 31 * result + idx;
-        return result;
+        return name != null ? name.hashCode() : 0;
     }
 }

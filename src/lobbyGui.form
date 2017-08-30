@@ -45,13 +45,15 @@
           <text value="Send"/>
         </properties>
       </component>
-      <scrollpane id="889b7">
+      <scrollpane id="889b7" binding="communicationScrollPane">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="322" height="26"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <autoscrolls value="true"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="160e9" class="javax.swing.JTextPane" binding="textPane1" default-binding="true">

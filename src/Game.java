@@ -20,6 +20,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     ArrayList<Player> players;
     static lobbyGui lg;
     static gameGui gg;
+    JFrame frame;
 
     protected Game() throws RemoteException {
         players = new ArrayList<>();
@@ -88,7 +89,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     public void initializeTable(){
         System.out.println("initialize table");
         gg = new gameGui(this);
-        gg.initializeGUI();
+        frame = gg.initializeGUI();
 
         lg.disposeGUI();
 
@@ -116,7 +117,19 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     @Override
     public void startGame(ArrayList<Player> p, int i) throws RemoteException {
         //System.out.println("my definitive index is: " + i +". was "+ myself.idx);
+
         players = p;
+        int playerNum = players.size();
+
+        players.get(0).setPredecessor(players.get(playerNum - 1));
+        players.get(0).setSuccessor(players.get(1));
+
+        for (int j = 1; j < playerNum; j++)
+        {
+            players.get(j).setPredecessor(players.get(j - 1));
+            players.get(j).setSuccessor(players.get((j + 1) % playerNum));
+        }
+
         myself.setIdx(i);
         //Game.lobby.unregister(players.get(i));
         initializeTable();
@@ -154,6 +167,10 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                     IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
                     ps.notifyTurn(myself.name);
                 }
+                catch (RemoteException e)
+                {
+
+                }
                 catch (NotBoundException e)
                 {
                     e.printStackTrace();
@@ -171,8 +188,15 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     @Override
     public void notifyWin(int playerIndex) throws RemoteException
     {
-        //JOptionPane.showMessageDialog(null, "Game Over! " + players.get(playerIndex).name + " wins!\nIl tuo punteggio è " + (myself.getPosition() + 1));
-        gg.printText("GAME OVER! Ha vinto " + players.get(playerIndex).name, false, true);
+        String playerName = players.get(playerIndex).name;
+
+        JOptionPane pane = new JOptionPane(playerName  + " wins!\nYour position is " + (myself.getPosition() + 1));
+        JDialog dialog = pane.createDialog(frame, "Game Over!");
+        dialog.setModal(false);
+        dialog.setVisible(true);
+
+        gg.printText("GAME OVER!\n" + playerName + " wins!", false, true);
+
         gg.setRollButtonEnabled(false);
     }
 
@@ -184,6 +208,6 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
             System.out.println("new position: "+ players.get(i).getPosition());
             gg.move(i,players.get(i).getPosition());
         }
-        gg.printText(players.get(i).name + " rolled a " + r,false,false);
+        gg.printText("\n" + players.get(i).name + " rolled a " + r + "\n",false,false);
     }
 }

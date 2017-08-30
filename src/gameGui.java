@@ -3,15 +3,9 @@ import jdk.nashorn.internal.scripts.JO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -29,9 +23,11 @@ public class gameGui {
     JPanel gamePanel;
     JTextPane listArea;
     JTextPane chatArea;
+    private JScrollPane chatAreaScrollPane;
     JLayeredPane gameMap;
     static HashMap<String,JLabel> pieces;
     Game G;
+    JFrame frame;
 
     public gameGui(Game game){
         this.G = game;
@@ -72,24 +68,62 @@ public class gameGui {
                         IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                         ps.updatePosition(G.myself.idx,dice);
                     } catch (NotBoundException | RemoteException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.out.println("Ho lanciato " + e + " perchè ho fallito l'updatePosition su " + p.name);
                     }
                 }
                 //passa il turno
+                Player suc = null;
                 try {
                     G.myself.setToken(false);
-                    Player suc = G.myself.getSuccessor();
+                    rollButton.setEnabled(false);
+
+                    suc = G.myself.getSuccessor();
+
                     if (suc == null) System.out.println("nosuc");
+
                     Registry reg = LocateRegistry.getRegistry(suc.address);
                     IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
                     ps.makeTurn();
-                    rollButton.setEnabled(false);
+
                 } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (NotBoundException e) {
+                    //e.printStackTrace();
+
+                    suc = suc.getSuccessor();
+
+                    do
+                    {
+                        G.myself.setSuccessor(G.players.get(G.players.indexOf(suc)));
+                        G.players.get(G.players.indexOf(suc)).setPredecessor(G.players.get(G.players.indexOf(G.myself)));
+
+                        try
+                        {
+                            Registry reg = LocateRegistry.getRegistry(suc.address);
+                            IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
+
+                            ps.makeTurn();
+                            break; // Successor found
+                        }
+                        catch (RemoteException e1)
+                        {
+                            suc = suc.getSuccessor();
+                        }
+                        catch (NotBoundException e1)
+                        {
+                            e1.printStackTrace();
+                        }
+                    } while (!suc.equals(G.myself));
+                }
+                catch (NotBoundException e) {
                     e.printStackTrace();
                 }
                 rollButton.setEnabled(false);
+
+                if (suc.equals(G.myself))
+                {
+                    // Alone
+                    JOptionPane.showMessageDialog(null, "Alone!");
+                }
 
                 int position = G.myself.getPosition();
 
@@ -97,7 +131,7 @@ public class gameGui {
                 {
                     for(Player p : G.getPlayers())
                     {
-                        if (p.idx != G.myself.idx)
+                        if (!p.equals(G.myself))
                         {
                             try
                             {
@@ -113,8 +147,12 @@ public class gameGui {
                         }
                     }
 
-                    printText("Congratulations " + G.myself.name + ", YOU WIN!", false,true);
-                    JOptionPane.showMessageDialog(null, "Game Over!", "YOU WIN!", JOptionPane.NO_OPTION);
+                    printText(G.myself.name + ", WINS!", false,true);
+
+                    JOptionPane pane = new JOptionPane("Congratulations " + G.myself.name + ", YOU WIN!");
+                    JDialog dialog = pane.createDialog(frame, "Game Over!");
+                    dialog.setModal(false);
+                    dialog.setVisible(true);
                 }
 
 
@@ -333,11 +371,19 @@ public class gameGui {
                 e1.printStackTrace();
             }
         }
-        JFrame frame = new JFrame("Snake and Ladders " + "[" + G.myself.name + "]");
+        frame = new JFrame("Snake and Ladders " + "[" + G.myself.name + "]");
         frame.setContentPane(this.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+        chatAreaScrollPane.setWheelScrollingEnabled(true);
+
+        // Autoscroll
+        chatAreaScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+            }});
 
         chatArea.setEditable(false);
         listArea.setEditable(false);

@@ -16,7 +16,8 @@ import java.util.TimerTask;
 public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private HashMap<String,Player> users;
     //static String ADDRESS = "25.72.70.109";
-    static String ADDRESS = "192.168.1.7";
+    //static String ADDRESS = "192.168.1.7";
+    static String ADDRESS = "127.0.0.1";
 
 
     private LobbyServer() throws RemoteException {
@@ -57,7 +58,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             System.out.println(p.name+": "+ p.ready +" AND "+ startGame + " = " + startGame);
         }
 
-        if (startGame == true && users.size()>=1){
+        if (startGame == true && users.size()>=2){
             System.out.println("all ready");
             //mischia i giocatori e manda il segnale di inizio!
             ArrayList<Player> players = new ArrayList<>();

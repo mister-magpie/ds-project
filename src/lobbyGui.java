@@ -25,6 +25,7 @@ public class lobbyGui {
     private JTextPane textPane1;
     private JTextField usernameField;
     private JTextArea textArea1;
+    private JScrollPane communicationScrollPane;
     Game G;
 
     public lobbyGui(Game game) {
