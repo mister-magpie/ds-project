@@ -64,10 +64,14 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         System.out.println("bound");
     }
 
-     public void getUsers() throws RemoteException {
-        //System.out.println("retrieving players list");
-        players = lobby.getPlayers();
-    }
+     public void getUsers() {
+         System.out.println("retrieving players list");
+         try {
+             players = lobby.getPlayers();
+         } catch (RemoteException e) {
+             e.printStackTrace();
+         }
+     }
 
 
     static public void register() throws RemoteException {
@@ -113,7 +117,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     @Override
     public void recieveMessage(String name, String msg){
-        //System.out.println("msg received\n"+name +": " +msg+"size of queue " + myself.msgQueue.size());
+        System.out.println("msg received\n"+name +": " +msg+"size of queue " + myself.msgQueue.size());
         myself.msgQueue.add(name+": "+msg);
     }
 
