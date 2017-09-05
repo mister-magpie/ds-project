@@ -1,9 +1,5 @@
-import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -196,7 +192,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     }
 
-    private synchronized void check(Player player)
+    private synchronized void check(final Player player)
     {
         if (predecessorTimer != null)
         {
