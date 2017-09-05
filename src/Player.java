@@ -3,12 +3,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-
-
 public class Player implements Serializable {
     String name;
     //Color color;
-    boolean token;
+    private boolean token;
     int idx;
     String address;
     boolean ready;
@@ -16,31 +14,33 @@ public class Player implements Serializable {
     private Player successor, predecessor;
     private int position;
 
-    int[] snakeHeads  = {17, 52, 57, 62, 88, 95, 97};
-    int[] snakeTails  = {13, 29, 40, 22, 18, 51, 79};
-    int[] ladderStart = {3, 8, 28, 58, 75, 80, 90};
-    int[] ladderEnd   = {21, 30, 84, 77, 86, 100, 91};
+    private int[] snakeHeads = {17, 52, 57, 62, 88, 95, 97};
+    private int[] snakeTails = {13, 29, 40, 22, 18, 51, 79};
+    private int[] ladderStart = {3, 8, 28, 58, 75, 80, 90};
+    private int[] ladderEnd = {21, 30, 84, 77, 86, 100, 91};
 
 
-    public Player(String name) throws RemoteException {
+    Player(String name) throws RemoteException {
         super();
         this.name = name;
         this.token = false;
         this.address = "localhost";
-        this.msgQueue = new ArrayDeque<String>(10);
+        this.msgQueue = new ArrayDeque<>(10);
         this.ready = false;
         this.position = 0;
     }
 
 
-    public void setIdx(int idx) {
+    void setIdx(int idx) {
         this.idx = idx;
     }
-    public void setUsername(String name){
+
+    void setUsername(String name) {
         this.name = name;
         this.address = "localhost/"+name;
     }
-    public int updatePosition(int roll){
+
+    int updatePosition(int roll) {
         //System.out.println(position);
 
         int newPosition = this.position + roll;
@@ -99,35 +99,35 @@ public class Player implements Serializable {
         return position;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    int getPosition() {
+        return position;
     }
 
-    public int getPosition() {
-        return position;
+    void setPosition(int position) {
+        this.position = position;
     }
 
     public boolean isToken() {
         return token;
     }
 
-    public void setSuccessor(Player successor) {
-        this.successor = successor;
-    }
-
-    public void setPredecessor(Player predecessor) {
-        this.predecessor = predecessor;
-    }
-
-    public Player getSuccessor() {
+    Player getSuccessor() {
         return successor;
     }
 
-    public Player getPredecessor() {
+    void setSuccessor(Player successor) {
+        this.successor = successor;
+    }
+
+    Player getPredecessor() {
         return predecessor;
     }
 
-    public void setToken(boolean token) {
+    void setPredecessor(Player predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    void setToken(boolean token) {
         this.token = token;
     }
 

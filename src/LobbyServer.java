@@ -1,13 +1,9 @@
-import com.sun.jndi.rmi.registry.RegistryContext;
-
-import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -15,8 +11,8 @@ import java.util.TimerTask;
 
 public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private HashMap<String,Player> users;
-    //static String ADDRESS = "25.72.70.109";
-    static String ADDRESS = "192.168.1.7";
+    //static String ADDRESS = "192.168.1.7";
+    //static String ADDRESS = "127.0.0.1";
 
 
     private LobbyServer() throws RemoteException {
@@ -41,9 +37,24 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         return player.address;
     }
 
+    public static void main(String[] args) {
+        //String ADDRESS = "25.83.11.133";
+        String ADDRESS = "//localhost";
+        if (args.length > 0) ADDRESS = args[0];
+        System.setProperty("java.rmi.server.hostname", ADDRESS);
+        try {
+            Registry reg = LocateRegistry.createRegistry(1099);
+            ILobby server = new LobbyServer();
+            System.out.println("Lobby Server is ONLINE on " + ADDRESS);
+            reg.rebind(ADDRESS + "/LobbyServer", server);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void unregister(Player player) throws RemoteException{
-        System.out.println("player #" + player.idx + " disconnected");
+        System.out.println("player " + player.name + " disconnected");
         users.remove(player.name);
     }
 
@@ -57,7 +68,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             System.out.println(p.name+": "+ p.ready +" AND "+ startGame + " = " + startGame);
         }
 
-        if (startGame == true && users.size()>=1){
+        if (startGame && users.size() >= 2) {
             System.out.println("all ready");
             //mischia i giocatori e manda il segnale di inizio!
             ArrayList<Player> players = new ArrayList<>();
@@ -82,7 +93,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public synchronized ArrayList<Player> getPlayers() {
+    public synchronized ArrayList getPlayers() {
 
         for(Player p : users.values()){
                 try {
@@ -100,19 +111,18 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
         }
 
-        return  new ArrayList(users.values());
+        return new ArrayList<Player>(users.values());
     }
 
-    public synchronized void pingUsers() {
+    private synchronized void pingUsers() {
         java.util.Timer t = new Timer();
         t.schedule(new TimerTask(){
             @Override
             public void run(){
                 for(Player u : users.values()){
-                    IPlayerServer ps = null;
                     try {
                         Registry reg = LocateRegistry.getRegistry(u.address);
-                        ps = (IPlayerServer) reg.lookup(u.address+"/"+u.name);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(u.address + "/" + u.name);
                         ps.ping("lobbyserver");
                     } catch (NotBoundException e) {
                         System.out.println("no bound!");
@@ -127,19 +137,5 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                 }
             }
         },0,1000);
-    }
-
-
-    public static void main(String[] args) {
-        System.setProperty("java.rmi.server.hostname",ADDRESS);
-        //String ADDRESS = "//localhost";
-        try {
-            Registry reg = LocateRegistry.createRegistry(1099);
-            ILobby server = new LobbyServer();
-            System.out.println("Lobby Server is ONLINE on " + ADDRESS);
-            reg.rebind(ADDRESS + "/LobbyServer", server);
-        } catch (RemoteException  e) {
-            e.printStackTrace();
-        }
     }
 }

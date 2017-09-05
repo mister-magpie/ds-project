@@ -1,5 +1,3 @@
-import jdk.nashorn.internal.scripts.JO;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -12,13 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class gameGui {
     JPanel panelMain;
@@ -84,9 +83,7 @@ public class gameGui {
                     IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address+"/"+suc.name);
                     ps.makeTurn();
                     rollButton.setEnabled(false);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (NotBoundException e) {
+                } catch (RemoteException | NotBoundException e) {
                     e.printStackTrace();
                 }
                 rollButton.setEnabled(false);
@@ -245,14 +242,12 @@ public class gameGui {
                 d.insertString(d.getLength(),p.address + "\n",null);
 
                 //t = t.concat("\n" +p.name + " - " + p.address);
-            } catch (NotBoundException  e) {
+            } catch (NotBoundException | BadLocationException e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
                 System.out.println(p.name + " offline");
                 G.players.remove(p);
                 //e.printStackTrace();
-            } catch (BadLocationException e) {
-                e.printStackTrace();
             }
         }
 

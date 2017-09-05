@@ -1,7 +1,10 @@
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.MalformedURLException;
@@ -10,8 +13,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class lobbyGui {
     private JFrame frame;
@@ -54,7 +57,7 @@ public class lobbyGui {
                 try {
                     printText("Connecting...",false,true);
                     String lobbyAddr = lobbyAddressTextField.getText();
-                    //lobbyAddr = "25.72.70.109";
+                    lobbyAddr = "25.72.70.109";
                     G.initializeLobby(lobbyAddr);
                 } catch (RemoteException | NotBoundException | MalformedURLException e) {
                     e.printStackTrace();

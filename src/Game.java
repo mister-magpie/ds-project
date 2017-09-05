@@ -1,9 +1,4 @@
-import javax.print.attribute.standard.MediaSize;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -18,14 +13,13 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     static ILobby lobby;
     static Player myself;
     ArrayList<Player> players;
-    static lobbyGui lg;
-    static gameGui gg;
+    private static lobbyGui lg;
+    private static gameGui gg;
 
-    protected Game() throws RemoteException {
+    private Game() throws RemoteException {
         players = new ArrayList<>();
 
     }
-
 
     public static void main(String[] args) throws RemoteException {
         Game G = new Game();
@@ -35,19 +29,11 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         //gg = new gameGui();
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
-    public static void bindServer(){
+    private static void bindServer() {
          try {
              LocateRegistry.createRegistry(1099);
          } catch (RemoteException e) {
-             //ge.printStackTrace();
+             e.printStackTrace();
          }
          try {
             Registry reg = LocateRegistry.getRegistry(myself.address);
@@ -58,6 +44,14 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
             System.out.println("cannot bind");
             e.printStackTrace();
         }
+    }
+
+    ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 
      public void getUsers() throws RemoteException {
