@@ -57,7 +57,7 @@ public class lobbyGui {
                 try {
                     printText("Connecting...",false,true);
                     String lobbyAddr = lobbyAddressTextField.getText();
-                    lobbyAddr = "25.72.70.109";
+                    //lobbyAddr = "25.72.70.109";
                     G.initializeLobby(lobbyAddr);
                 } catch (RemoteException | NotBoundException | MalformedURLException e) {
                     e.printStackTrace();
