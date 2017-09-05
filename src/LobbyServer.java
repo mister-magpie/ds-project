@@ -48,8 +48,8 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     @Override
     public void checkReady(Player player) throws RemoteException {
         boolean startGame =  true;
-        //users.get(users.indexOf(player)).ready = true;
-        users.get(player.name).ready = true;
+        System.out.println(player.name + " ready = " +player.ready);
+        users.get(player.name).ready = player.ready;
         for(Player p : users.values()){
             startGame = startGame && p.ready;
             System.out.println(p.name+": "+ p.ready +" AND "+ startGame + " = " + startGame);
@@ -133,12 +133,12 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
                 }
             }
-        },0,1000);
+        },0,5000);
     }
 
 
     public static void main(String[] args) {
-        String ADDRESS = "//localhost";
+        String ADDRESS = "130.136.153.88";
         if (args.length>0) ADDRESS = args[0];
         System.setProperty("java.rmi.server.hostname",ADDRESS);
         try {

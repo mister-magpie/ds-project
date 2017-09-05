@@ -50,13 +50,13 @@ public class lobbyGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 String username = usernameField.getText();
                 if(username == null) username = "anonymous";
-                G.myself.setUsername(username);
+                Game.myself.setUsername(username);
                 //connectiong phase
                 try {
                     System.out.println("lobbygui try connecting");
                     printText("Connecting...",false,true);
                     String lobbyAddr = lobbyAddressTextField.getText();
-                    //lobbyAddr = "25.72.70.109";
+                    lobbyAddr = "130.136.153.88";
                     G.initializeLobby(lobbyAddr);
                 } catch (RemoteException | NotBoundException | MalformedURLException e) {
                     e.printStackTrace();
@@ -66,7 +66,7 @@ public class lobbyGui {
                 //registering phase
                 try {
                     printText("Registering...",false,true);
-                    G.register();
+                    Game.register();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -79,8 +79,8 @@ public class lobbyGui {
 
                 //update cycles
                 G.getUsers();
-                getUserList();
                 updateList();
+                getUserList();
             }
         });
 
@@ -132,9 +132,10 @@ public class lobbyGui {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean state = readyCheckBox.isSelected();
+                System.out.println("am i ready? " + state);
                 try {
-                    G.lobby.checkReady(G.myself);
-                    G.myself.ready = state;
+                    Game.myself.ready = state;
+                    Game.lobby.checkReady(Game.myself);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -148,11 +149,13 @@ public class lobbyGui {
     private void sendMessage(){
         String msg = chatText.getText();
         chatText.setText("");
+        G.getUsers();
+        getUserList();
         for(Player p : G.players){
             try {
                 Registry reg = LocateRegistry.getRegistry(p.address);
                 IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                ps.recieveMessage(G.myself.name, msg);
+                ps.recieveMessage(Game.myself.name, msg);
             } catch (NotBoundException | RemoteException e) {
                 System.out.println(p.name + " not responding");
                 G.players.remove(p.name);
@@ -165,11 +168,11 @@ public class lobbyGui {
     private void getUserList(){
         ArrayList<Player> users = new ArrayList<>();
         try {
-            users = G.lobby.getPlayers();
+            users = Game.lobby.getPlayers();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        //update
+        //update127.0.0.1
         G.players = users;
         textArea1.setMargin(new Insets(0,10,5,5));
 
@@ -180,7 +183,7 @@ public class lobbyGui {
 
     }
     private void getChatMessages(){
-        String msg = G.myself.msgQueue.poll();
+        String msg = Game.myself.msgQueue.poll();
         if(msg != null){
             printText(msg,false,false);
         }
@@ -260,10 +263,10 @@ public class lobbyGui {
             public void windowClosing(WindowEvent windowEvent) {
                 System.out.println("chiudo tutto");
 
-                if(G.lobby !=null){
+                if(Game.lobby !=null){
                     try {
 
-                        G.lobby.unregister(G.myself);
+                        Game.lobby.unregister(Game.myself);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
