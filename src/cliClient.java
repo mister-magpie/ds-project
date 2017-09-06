@@ -29,7 +29,7 @@ public class cliClient {
 
                 case "status":
                     System.out.println("NAME\tADDRES\n" + me.name + "\t" + me.address);
-                    break;
+                    break; 
 
                 case "connect":
                     System.out.println("lobby address? ");
