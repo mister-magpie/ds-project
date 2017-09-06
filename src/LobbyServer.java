@@ -22,19 +22,18 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         pingUsers();
     }
 
-    @Override
-    public String register(Player player) throws RemoteException {
+    public static void main(String[] args) {
+        String ADDRESS = "130.136.153.88";
+        if (args.length > 0) ADDRESS = args[0];
+        System.setProperty("java.rmi.server.hostname", ADDRESS);
         try {
-            System.out.println("player " + player.name +" #"+ player.idx + " connected!\nAddress: " + getClientHost());
-            if(users.containsKey(player.name)) return null;//if player of the same name is present prompt a change;
-            player.idx = users.size();
-            player.address = getClientHost();
-            users.put(player.name,player);
-        } catch (ServerNotActiveException e) {
+            Registry reg = LocateRegistry.createRegistry(1099);
+            ILobby server = new LobbyServer();
+            System.out.println("Lobby Server is ONLINE on " + ADDRESS + "\n");
+            reg.rebind(ADDRESS + "/LobbyServer", server);
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
-
-        return player.address;
     }
 
     @Override
@@ -106,46 +105,48 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         return  new ArrayList<Player>(users.values());
     }
 
+    @Override
+    public String register(Player player) throws RemoteException {
+        try {
+            System.out.println("\nplayer " + player.name + " #" + player.idx + " connected!\nAddress: " + getClientHost());
+            if (users.containsKey(player.name)) return null;//if player of the same name is present prompt a change;
+            player.idx = users.size();
+            player.address = getClientHost();
+            users.put(player.name, player);
+        } catch (ServerNotActiveException e) {
+            e.printStackTrace();
+        }
+
+        return player.address;
+    }
+
     public synchronized void pingUsers() {
         java.util.Timer t = new Timer();
         t.schedule(new TimerTask(){
             @Override
             public void run(){
+                if (!users.isEmpty()) {
+                    System.out.print("\rchecking if anyone is crashed...");
+                    for (Player u : users.values()) {
+                        try {
+                            Registry reg = LocateRegistry.getRegistry(u.address);
+                            IPlayerServer ps = (IPlayerServer) reg.lookup(u.address + "/" + u.name);
+                            ps.ping("lobbyserver");
+                        } catch (NotBoundException e) {
+                            System.out.println("not bound!");
+                            users.remove(u.name);
+                            //e.printStackTrace();
+                        } catch (RemoteException e) {
+                            System.out.println(u.name + " not responding!");
+                            users.remove(u.name);
+                            //e.printStackTrace();
+                        } catch (ServerNotActiveException e) {
+                            e.printStackTrace();
+                        }
 
-                System.out.println("checking if anyone is crashed");
-                for(Player u : users.values()){
-                    try {
-                        Registry reg = LocateRegistry.getRegistry(u.address);
-                        IPlayerServer ps = (IPlayerServer) reg.lookup(u.address+"/"+u.name);
-                        ps.ping("lobbyserver");
-                    } catch (NotBoundException e) {
-                        System.out.println("not bound!");
-                        users.remove(u.name);
-                        //e.printStackTrace();
-                    } catch (RemoteException e) {
-                        System.out.println(u.name + " not responding!");
-                        users.remove(u.name);
-                        //e.printStackTrace();
                     }
-                    catch (ServerNotActiveException e){e.printStackTrace();}
-
                 }
             }
-        },0,5000);
-    }
-
-
-    public static void main(String[] args) {
-        String ADDRESS = "130.136.153.88";
-        if (args.length>0) ADDRESS = args[0];
-        System.setProperty("java.rmi.server.hostname",ADDRESS);
-        try {
-            Registry reg = LocateRegistry.createRegistry(1099);
-            ILobby server = new LobbyServer();
-            System.out.println("Lobby Server is ONLINE on " + ADDRESS);
-            reg.rebind(ADDRESS + "/LobbyServer", server);
-        } catch (RemoteException  e) {
-            e.printStackTrace();
-        }
+        }, 0, 5000);
     }
 }
