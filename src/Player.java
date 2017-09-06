@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -22,7 +21,7 @@ public class Player implements Serializable {
     int[] ladderEnd   = {21, 30, 84, 77, 86, 100, 91};
 
 
-    public Player(String name) throws RemoteException {
+    public Player(String name) {
         super();
         this.name = name;
         this.token = false;

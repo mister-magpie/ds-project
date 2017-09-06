@@ -31,6 +31,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
     public static void main(String[] args) throws RemoteException {
         Game G = new Game();
         myself = new Player("anonymous");
+        if (args.length > 0 ) myself.address = args[0];
         lg = new lobbyGui(G);
         lg.initializeGUI();
         //gg = new gameGui();

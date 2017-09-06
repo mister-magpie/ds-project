@@ -24,8 +24,6 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
     @Override
     public String register(Player player) throws RemoteException {
-
-
         try {
             System.out.println("player " + player.name +" #"+ player.idx + " connected!\nAddress: " + getClientHost());
             if(users.containsKey(player.name)) return null;//if player of the same name is present prompt a change;
