@@ -79,6 +79,28 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                     e.printStackTrace();
                 }
             }
+
+            // Notify because timer needs to start from the beginning of the game.
+            for (Player pToNotify : players)
+            {
+                if (!pToNotify.equals(players.get(0)))
+                {
+                    try
+                    {
+                        Registry      reg = LocateRegistry.getRegistry(pToNotify.address);
+                        IPlayerServer ps  = (IPlayerServer) reg.lookup(pToNotify.address + "/" + pToNotify.name);
+                        ps.notifyTurn(players.get(0));
+                    }
+                    catch (RemoteException e)
+                    {
+                        System.out.println("\nHo lanciato " + e.getMessage() + "\n perchè non ho potuto notificare il turno a " + pToNotify.name + "\n");
+                    }
+                    catch (NotBoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
