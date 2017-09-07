@@ -53,7 +53,6 @@ public class lobbyGui {
                 G.myself.setUsername(username);
                 //connectiong phase
                 try {
-                    System.out.println("lobbygui try connecting");
                     printText("Connecting...",false,true);
                     String lobbyAddr = lobbyAddressTextField.getText();
                     //lobbyAddr = "25.72.70.109";
@@ -78,8 +77,11 @@ public class lobbyGui {
                 printText("when you are ready to start check the box",false,true);
 
                 //update cycles
-                G.getUsers();
-                getUserList();
+                try {
+                    G.getUsers();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 updateList();
             }
         });
@@ -154,10 +156,7 @@ public class lobbyGui {
                 IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                 ps.recieveMessage(G.myself.name, msg);
             } catch (NotBoundException | RemoteException e) {
-                System.out.println(p.name + " not responding");
-                G.players.remove(p.name);
-                getUserList();
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
@@ -192,7 +191,7 @@ public class lobbyGui {
             @Override
             public void run(){
                 //update userlist
-                //getUserList();
+                getUserList();
                 //update chat
                 getChatMessages();
             }

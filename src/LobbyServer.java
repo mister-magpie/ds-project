@@ -81,13 +81,9 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
     @Override
     public synchronized ArrayList<Player> getPlayers() {
-        try {
-            System.out.println("getPlayers call from " +  getClientHost());
-        } catch (ServerNotActiveException e) {
-            e.printStackTrace();
-        }
+
         for(Player p : users.values()){
-                /*try {
+                try {
                     Registry reg = LocateRegistry.getRegistry(p.address);
                     IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                     ps.ping("lobbyserver");
@@ -101,11 +97,11 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                 }
                 catch (ServerNotActiveException e) {
                     e.printStackTrace();
-                }*/
+                }
             //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
         }
 
-        return  new ArrayList<Player>(users.values());
+        return  new ArrayList(users.values());
     }
 
     public synchronized void pingUsers() {
@@ -113,15 +109,14 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         t.schedule(new TimerTask(){
             @Override
             public void run(){
-
-                System.out.println("checking if anyone is crashed");
                 for(Player u : users.values()){
+                    IPlayerServer ps = null;
                     try {
                         Registry reg = LocateRegistry.getRegistry(u.address);
-                        IPlayerServer ps = (IPlayerServer) reg.lookup(u.address+"/"+u.name);
+                        ps = (IPlayerServer) reg.lookup(u.address+"/"+u.name);
                         ps.ping("lobbyserver");
                     } catch (NotBoundException e) {
-                        System.out.println("not bound!");
+                        System.out.println("no bound!");
                         users.remove(u.name);
                         //e.printStackTrace();
                     } catch (RemoteException e) {
