@@ -1,9 +1,13 @@
+import com.sun.jndi.rmi.registry.RegistryContext;
+
+import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -13,8 +17,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     private HashMap<String,Player> users;
     //static String ADDRESS = "25.72.70.109";
     //static String ADDRESS = "192.168.1.7";
-    //static String ADDRESS = "127.0.0.1";
-    //static String ADDRESS = "127.0.0.1";
+    static String ADDRESS = "127.0.0.1";
 
 
     private LobbyServer() throws RemoteException {
@@ -133,9 +136,8 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
 
     public static void main(String[] args) {
-        String ADDRESS = "//localhost";
-        if (args.length>0) ADDRESS = args[0];
         System.setProperty("java.rmi.server.hostname",ADDRESS);
+        //String ADDRESS = "//localhost";
         try {
             Registry reg = LocateRegistry.createRegistry(1099);
             ILobby server = new LobbyServer();
