@@ -50,7 +50,6 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
              LocateRegistry.createRegistry(1099);
          } catch (RemoteException e) {
              //ge.printStackTrace();
-             System.out.println("rmi registry already created");
          }
          try {
             Registry reg = LocateRegistry.getRegistry(myself.address);
@@ -61,7 +60,6 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
             System.out.println("cannot bind");
             e.printStackTrace();
         }
-        System.out.println("bound");
     }
 
      public void getUsers() throws RemoteException {
