@@ -1,29 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="acac5b2e-f3b2-49e4-8192-198360046942" name="Default" comment="cli tests">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/Game.class" afterPath="$PROJECT_DIR$/out/production/ds-project/Game.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/LobbyServer$1.class" afterPath="$PROJECT_DIR$/out/production/ds-project/LobbyServer$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/LobbyServer.class" afterPath="$PROJECT_DIR$/out/production/ds-project/LobbyServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/cliClient.class" afterPath="$PROJECT_DIR$/out/production/ds-project/cliClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/gameGui.class" afterPath="$PROJECT_DIR$/out/production/ds-project/gameGui.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$1.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$2.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$3.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$4.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$5.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$6.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$6.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$7.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$7.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$8.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$8.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+    <list default="true" id="acac5b2e-f3b2-49e4-8192-198360046942" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game.java" afterPath="$PROJECT_DIR$/src/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/LobbyServer.java" afterPath="$PROJECT_DIR$/src/LobbyServer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cliClient.java" afterPath="$PROJECT_DIR$/src/cliClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gameGui.form" afterPath="$PROJECT_DIR$/src/gameGui.form" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gameGui.java" afterPath="$PROJECT_DIR$/src/gameGui.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lobbyGui.form" afterPath="$PROJECT_DIR$/src/lobbyGui.form" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lobbyGui.java" afterPath="$PROJECT_DIR$/src/lobbyGui.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -52,10 +33,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
+            <state relative-caret-position="2193">
               <caret line="133" column="49" lean-forward="false" selection-start-line="133" selection-start-column="49" selection-end-line="133" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -92,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cliClient.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="cliClient.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cliClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="137" column="24" lean-forward="false" selection-start-line="137" selection-start-column="24" selection-end-line="137" selection-end-column="24" />
+            <state relative-caret-position="289">
+              <caret line="89" column="13" lean-forward="false" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -114,31 +95,29 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="gameGui.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gameGui.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="162" column="33" lean-forward="false" selection-start-line="159" selection-start-column="20" selection-end-line="166" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="lobbyGui.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lobbyGui.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="60" column="22" lean-forward="false" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
+            <state relative-caret-position="87">
+              <caret line="62" column="80" lean-forward="false" selection-start-line="62" selection-start-column="80" selection-end-line="62" selection-end-column="80" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1369#1535#0" expanded="true" />
-                <element signature="e#1534#1535#0" expanded="true" />
-                <element signature="e#1579#3120#0" expanded="true" />
-                <element signature="e#3119#3120#0" expanded="true" />
-                <element signature="e#3161#3464#0" expanded="true" />
-                <element signature="e#3463#3464#0" expanded="true" />
-                <element signature="e#3503#3669#0" expanded="true" />
-                <element signature="e#3668#3669#0" expanded="true" />
-                <element signature="e#4352#4837#0" expanded="true" />
-                <element signature="e#4836#4837#0" expanded="true" />
-                <element signature="e#6274#6501#0" expanded="true" />
-                <element signature="e#6500#6501#0" expanded="true" />
-                <element signature="e#8664#9164#0" expanded="true" />
-                <element signature="e#9163#9164#0" expanded="true" />
-                <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-                <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-                <element signature="e#13449#13450#0" expanded="true" />
-                <element signature="e#13481#13482#0" expanded="true" />
+                <element signature="e#13448#13449#0" expanded="true" />
+                <element signature="e#13480#13481#0" expanded="true" />
+                <marker date="1504879932421" expanded="true" signature="9416:9422" ph="{...}" />
+                <marker date="1504879932421" expanded="true" signature="9422:13481" ph="UI Designer generated code" />
               </folding>
             </state>
           </provider>
@@ -183,12 +162,12 @@
         <option value="$PROJECT_DIR$/src/ILobby.java" />
         <option value="$PROJECT_DIR$/src/gameGui.java" />
         <option value="$PROJECT_DIR$/src/Player.java" />
-        <option value="$PROJECT_DIR$/src/cliClient.java" />
         <option value="$PROJECT_DIR$/src/lobbyGui.form" />
         <option value="$PROJECT_DIR$/src/LobbyServer.java" />
         <option value="$PROJECT_DIR$/src/lobbyGui.java" />
         <option value="$PROJECT_DIR$/src/gameGui.form" />
         <option value="$PROJECT_DIR$/src/Game.java" />
+        <option value="$PROJECT_DIR$/src/cliClient.java" />
       </list>
     </option>
   </component>
@@ -296,6 +275,12 @@
               <item name="ds-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="ds-project" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ds-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ds-project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="gameGui" type="e9f4de52:FormNode" />
             </path>
           </expand>
           <select />
@@ -458,8 +443,8 @@
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Application.Game" />
-        <item index="1" class="java.lang.String" itemvalue="Application.LobbyServer" />
+        <item index="0" class="java.lang.String" itemvalue="Application.LobbyServer" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Game" />
         <item index="2" class="java.lang.String" itemvalue="Application.cliClient" />
       </list>
     </recent_temporary>
@@ -499,7 +484,7 @@
       <workItem from="1504711885248" duration="14940000" />
       <workItem from="1504778705001" duration="2806000" />
       <workItem from="1504871602301" duration="2107000" />
-      <workItem from="1504875664881" duration="3899000" />
+      <workItem from="1504875664881" duration="4187000" />
     </task>
     <task id="LOCAL-00001" summary="client side fixes">
       <created>1503398583361</created>
@@ -550,11 +535,18 @@
       <option name="project" value="LOCAL" />
       <updated>1504734325987</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="compilable on lab machines">
+      <created>1504879789879</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1504879789879</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84186000" />
+    <option name="totallyTimeSpent" value="84474000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="768" extended-state="6" />
@@ -631,7 +623,8 @@
     <MESSAGE value="testing in lab machines" />
     <MESSAGE value="player must be final" />
     <MESSAGE value="cli tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="cli tests" />
+    <MESSAGE value="compilable on lab machines" />
+    <option name="LAST_COMMIT_MESSAGE" value="compilable on lab machines" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -673,24 +666,10 @@
           <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1369#1535#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-            <element signature="e#1579#3120#0" expanded="true" />
-            <element signature="e#3119#3120#0" expanded="true" />
-            <element signature="e#3161#3464#0" expanded="true" />
-            <element signature="e#3463#3464#0" expanded="true" />
-            <element signature="e#3503#3669#0" expanded="true" />
-            <element signature="e#3668#3669#0" expanded="true" />
-            <element signature="e#4352#4837#0" expanded="true" />
-            <element signature="e#4836#4837#0" expanded="true" />
-            <element signature="e#6274#6501#0" expanded="true" />
-            <element signature="e#6500#6501#0" expanded="true" />
-            <element signature="e#8664#9164#0" expanded="true" />
-            <element signature="e#9163#9164#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="e#13449#13450#0" expanded="true" />
-            <element signature="e#13481#13482#0" expanded="true" />
+            <element signature="e#13448#13449#0" expanded="true" />
+            <element signature="e#13480#13481#0" expanded="true" />
+            <marker date="1504879932421" expanded="true" signature="9416:9422" ph="{...}" />
+            <marker date="1504879932421" expanded="true" signature="9422:13481" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -760,24 +739,10 @@
           <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1369#1535#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-            <element signature="e#1579#3120#0" expanded="true" />
-            <element signature="e#3119#3120#0" expanded="true" />
-            <element signature="e#3161#3464#0" expanded="true" />
-            <element signature="e#3463#3464#0" expanded="true" />
-            <element signature="e#3503#3669#0" expanded="true" />
-            <element signature="e#3668#3669#0" expanded="true" />
-            <element signature="e#4352#4837#0" expanded="true" />
-            <element signature="e#4836#4837#0" expanded="true" />
-            <element signature="e#6274#6501#0" expanded="true" />
-            <element signature="e#6500#6501#0" expanded="true" />
-            <element signature="e#8664#9164#0" expanded="true" />
-            <element signature="e#9163#9164#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="e#13449#13450#0" expanded="true" />
-            <element signature="e#13481#13482#0" expanded="true" />
+            <element signature="e#13448#13449#0" expanded="true" />
+            <element signature="e#13480#13481#0" expanded="true" />
+            <marker date="1504879932421" expanded="true" signature="9416:9422" ph="{...}" />
+            <marker date="1504879932421" expanded="true" signature="9422:13481" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -841,24 +806,10 @@
           <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1369#1535#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-            <element signature="e#1579#3120#0" expanded="true" />
-            <element signature="e#3119#3120#0" expanded="true" />
-            <element signature="e#3161#3464#0" expanded="true" />
-            <element signature="e#3463#3464#0" expanded="true" />
-            <element signature="e#3503#3669#0" expanded="true" />
-            <element signature="e#3668#3669#0" expanded="true" />
-            <element signature="e#4352#4837#0" expanded="true" />
-            <element signature="e#4836#4837#0" expanded="true" />
-            <element signature="e#6274#6501#0" expanded="true" />
-            <element signature="e#6500#6501#0" expanded="true" />
-            <element signature="e#8664#9164#0" expanded="true" />
-            <element signature="e#9163#9164#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="e#13449#13450#0" expanded="true" />
-            <element signature="e#13481#13482#0" expanded="true" />
+            <element signature="e#13448#13449#0" expanded="true" />
+            <element signature="e#13480#13481#0" expanded="true" />
+            <marker date="1504879932421" expanded="true" signature="9416:9422" ph="{...}" />
+            <marker date="1504879932421" expanded="true" signature="9422:13481" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -891,24 +842,10 @@
           <caret line="114" column="65" lean-forward="true" selection-start-line="114" selection-start-column="65" selection-end-line="114" selection-end-column="65" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1369#1535#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-            <element signature="e#1579#3120#0" expanded="true" />
-            <element signature="e#3119#3120#0" expanded="true" />
-            <element signature="e#3161#3464#0" expanded="true" />
-            <element signature="e#3463#3464#0" expanded="true" />
-            <element signature="e#3503#3669#0" expanded="true" />
-            <element signature="e#3668#3669#0" expanded="true" />
-            <element signature="e#4352#4837#0" expanded="true" />
-            <element signature="e#4836#4837#0" expanded="true" />
-            <element signature="e#6274#6501#0" expanded="true" />
-            <element signature="e#6500#6501#0" expanded="true" />
-            <element signature="e#8664#9164#0" expanded="true" />
-            <element signature="e#9163#9164#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="e#13449#13450#0" expanded="true" />
-            <element signature="e#13481#13482#0" expanded="true" />
+            <element signature="e#13448#13449#0" expanded="true" />
+            <element signature="e#13480#13481#0" expanded="true" />
+            <marker date="1504879932421" expanded="true" signature="9416:9422" ph="{...}" />
+            <marker date="1504879932421" expanded="true" signature="9422:13481" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -967,24 +904,10 @@
           <caret line="27" column="13" lean-forward="true" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1369#1535#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-            <element signature="e#1579#3120#0" expanded="true" />
-            <element signature="e#3119#3120#0" expanded="true" />
-            <element signature="e#3161#3464#0" expanded="true" />
-            <element signature="e#3463#3464#0" expanded="true" />
-            <element signature="e#3503#3669#0" expanded="true" />
-            <element signature="e#3668#3669#0" expanded="true" />
-            <element signature="e#4352#4837#0" expanded="true" />
-            <element signature="e#4836#4837#0" expanded="true" />
-            <element signature="e#6274#6501#0" expanded="true" />
-            <element signature="e#6500#6501#0" expanded="true" />
-            <element signature="e#8664#9164#0" expanded="true" />
-            <element signature="e#9163#9164#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="e#13449#13450#0" expanded="true" />
-            <element signature="e#13481#13482#0" expanded="true" />
+            <element signature="e#13448#13449#0" expanded="true" />
+            <element signature="e#13480#13481#0" expanded="true" />
+            <marker date="1504879932421" expanded="true" signature="9416:9422" ph="{...}" />
+            <marker date="1504879932421" expanded="true" signature="9422:13481" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -1093,16 +1016,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Player.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -1122,14 +1035,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cliClient.java">
+    <entry file="file://$PROJECT_DIR$/src/lobbyGui.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lobbyGui.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="137" column="24" lean-forward="false" selection-start-line="137" selection-start-column="24" selection-end-line="137" selection-end-column="24" />
+        <state relative-caret-position="87">
+          <caret line="62" column="80" lean-forward="false" selection-start-line="62" selection-start-column="80" selection-end-line="62" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#13448#13449#0" expanded="true" />
+            <element signature="e#13480#13481#0" expanded="true" />
+            <marker date="1504879932421" expanded="true" signature="9416:9422" ph="{...}" />
+            <marker date="1504879932421" expanded="true" signature="9422:13481" ph="UI Designer generated code" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gameGui.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/LobbyServer.java">
@@ -1140,51 +1067,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lobbyGui.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lobbyGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="60" column="22" lean-forward="false" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1369#1535#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-            <element signature="e#1579#3120#0" expanded="true" />
-            <element signature="e#3119#3120#0" expanded="true" />
-            <element signature="e#3161#3464#0" expanded="true" />
-            <element signature="e#3463#3464#0" expanded="true" />
-            <element signature="e#3503#3669#0" expanded="true" />
-            <element signature="e#3668#3669#0" expanded="true" />
-            <element signature="e#4352#4837#0" expanded="true" />
-            <element signature="e#4836#4837#0" expanded="true" />
-            <element signature="e#6274#6501#0" expanded="true" />
-            <element signature="e#6500#6501#0" expanded="true" />
-            <element signature="e#8664#9164#0" expanded="true" />
-            <element signature="e#9163#9164#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
-            <element signature="e#13449#13450#0" expanded="true" />
-            <element signature="e#13481#13482#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameGui.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
+        <state relative-caret-position="2193">
           <caret line="133" column="49" lean-forward="false" selection-start-line="133" selection-start-column="49" selection-end-line="133" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#check#0;class#Game#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gameGui.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="162" column="33" lean-forward="false" selection-start-line="159" selection-start-column="20" selection-end-line="166" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cliClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="89" column="13" lean-forward="false" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

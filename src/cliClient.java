@@ -80,7 +80,14 @@ public class cliClient extends UnicastRemoteObject implements IPlayerServer {
 
     private static void sendMsg(String msg, ArrayList<Player> players) {
         for (Player p : players) {
-
+            try {
+                Registry reg = LocateRegistry.getRegistry(p.address);
+                IPlayerServer ps = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                ps.recieveMessage(Game.myself.name, msg);
+            } catch (NotBoundException | RemoteException e) {
+                System.out.println(p.name + " not responding");
+                //e.printStackTrace();
+            }
         }
     }
 
@@ -113,7 +120,7 @@ public class cliClient extends UnicastRemoteObject implements IPlayerServer {
 
     @Override
     public int ping(String name) throws RemoteException, ServerNotActiveException {
-        System.out.println("riceived ping from " + getClientHost());
+        System.out.println("received ping from " + getClientHost());
         return 0;
     }
 
