@@ -80,12 +80,12 @@ public class cliClient extends UnicastRemoteObject implements IPlayerServer {
 
     }
 
-    private static void sendMsg(String msg, ArrayList<Player> players) {
-        for (Player p : players) {
+    private static void sendMsg(String msg, ArrayList<Player> pls) {
+        for (Player p : pls) {
             try {
                 Registry reg = LocateRegistry.getRegistry(p.address);
                 IPlayerServer ps = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
-                ps.recieveMessage(Game.myself.name, msg);
+                ps.recieveMessage(me.name, msg);
             } catch (NotBoundException | RemoteException e) {
                 System.out.println(p.name + " not responding");
                 //e.printStackTrace();
@@ -109,7 +109,7 @@ public class cliClient extends UnicastRemoteObject implements IPlayerServer {
         }
         try {
             Registry reg = LocateRegistry.getRegistry(myself.address);
-            IPlayerServer ps = new Game();
+            IPlayerServer ps = new cliClient();
             //System.out.println(myself.address+"/"+myself.name);
             reg.rebind(myself.address + "/" + myself.name, ps);
         } catch (RemoteException e) {

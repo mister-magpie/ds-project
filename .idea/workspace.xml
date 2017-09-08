@@ -78,8 +78,8 @@
       <file leaf-file-name="cliClient.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cliClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="54" column="25" lean-forward="true" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
+            <state relative-caret-position="223">
+              <caret line="111" column="46" lean-forward="false" selection-start-line="111" selection-start-column="46" selection-end-line="111" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -155,6 +155,7 @@
       <find>getRegis</find>
       <find>remove</find>
       <find>list</find>
+      <find>Game</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -506,7 +507,7 @@
       <workItem from="1504711885248" duration="14940000" />
       <workItem from="1504778705001" duration="2806000" />
       <workItem from="1504871602301" duration="2107000" />
-      <workItem from="1504875664881" duration="6948000" />
+      <workItem from="1504875664881" duration="7153000" />
     </task>
     <task id="LOCAL-00001" summary="client side fixes">
       <created>1503398583361</created>
@@ -578,11 +579,18 @@
       <option name="project" value="LOCAL" />
       <updated>1504882764800</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="cli.sendMsg should work now">
+      <created>1504882821953</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1504882821953</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="87235000" />
+    <option name="totallyTimeSpent" value="87440000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="768" extended-state="6" />
@@ -1243,8 +1251,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cliClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="54" column="25" lean-forward="true" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
+        <state relative-caret-position="223">
+          <caret line="111" column="46" lean-forward="false" selection-start-line="111" selection-start-column="46" selection-end-line="111" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
