@@ -191,11 +191,11 @@ public class lobbyGui {
             @Override
             public void run() {
                 //update userlist
-                //getUserList();
+                getUserList();
                 //update chat
                 getChatMessages();
             }
-        }, 0, 500);
+        }, 0, 1000);
     }
 
     public void printText(String text, boolean append, boolean bold) {

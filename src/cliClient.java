@@ -71,6 +71,7 @@ public class cliClient extends UnicastRemoteObject implements IPlayerServer {
                     System.exit(0);
                     break;
                 case "send":
+                    System.out.println("write your message");
                     sendMsg(scanner.next(), players);
                     break;
             }

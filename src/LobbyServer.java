@@ -4,13 +4,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class LobbyServer extends UnicastRemoteObject implements ILobby {
-    private HashMap<String,Player> users;
+    private Map<String, Player> users;
     //static String ADDRESS = "25.72.70.109";
     //static String ADDRESS = "192.168.1.7";
     //static String ADDRESS = "127.0.0.1";
@@ -18,7 +15,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
 
 
     private LobbyServer() throws RemoteException {
-        this.users = new HashMap<>();
+        this.users = Collections.synchronizedMap(new HashMap<String, Player>());
         pingUsers();
     }
 
@@ -83,25 +80,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
         } catch (ServerNotActiveException e) {
             e.printStackTrace();
         }
-        for(Player p : users.values()){
-                /*try {
-                    Registry reg = LocateRegistry.getRegistry(p.address);
-                    IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
-                    ps.ping("lobbyserver");
-                } catch (RemoteException e) {
-                    System.out.println(p.name + " not responding!");
-                    //users.remove(p.name);
-                    //e.printStackTrace();
-                }catch (NotBoundException e) {
-                    System.out.println("not bound!");
-                    //e.printStackTrace();
-                }
-                catch (ServerNotActiveException e) {
-                    e.printStackTrace();
-                }*/
-            //System.out.println(p.name + " " + users.indexOf(p) + " " + readyState.get(users.indexOf(p)) + " ");
-        }
-
+        checkCrashes();
         return  new ArrayList<Player>(users.values());
     }
 
@@ -126,27 +105,34 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             @Override
             public void run(){
                 if (!users.isEmpty()) {
-                    System.out.print("\rchecking if anyone is crashed...");
-                    for (Player u : users.values()) {
-                        try {
-                            Registry reg = LocateRegistry.getRegistry(u.address);
-                            IPlayerServer ps = (IPlayerServer) reg.lookup(u.address + "/" + u.name);
-                            ps.ping("lobbyserver");
-                        } catch (NotBoundException e) {
-                            System.out.println("not bound!");
-                            users.remove(u.name);
-                            //e.printStackTrace();
-                        } catch (RemoteException e) {
-                            System.out.println(u.name + " not responding!");
-                            users.remove(u.name);
-                            //e.printStackTrace();
-                        } catch (ServerNotActiveException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
+                    //checkCrashes();
                 }
             }
         }, 0, 5000);
+    }
+
+    public void checkCrashes() {
+        System.out.print("\rchecking if anyone is crashed...");
+        synchronized (users) {
+            Iterator<Player> iterator = users.values().iterator();
+            while (iterator.hasNext()) {
+                Player u = iterator.next();
+                try {
+                    Registry reg = LocateRegistry.getRegistry(u.address);
+                    IPlayerServer ps = (IPlayerServer) reg.lookup(u.address + "/" + u.name);
+                    ps.ping("lobbyserver");
+                } catch (NotBoundException e) {
+                    System.out.println("not bound!");
+                    users.remove(u.name);
+                    //e.printStackTrace();
+                } catch (RemoteException e) {
+                    System.out.println(u.name + " not responding!");
+                    users.remove(u.name);
+                    //e.printStackTrace();
+                } catch (ServerNotActiveException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
