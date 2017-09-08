@@ -103,16 +103,16 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     }
     @Override
-    public int ping(String name) throws RemoteException, ServerNotActiveException {
+    public int ping(String name) {
         try {
             String s = "ping from " + name + " " + getClientHost();
             //System.out.println(s);
             return 1;
         } catch (ServerNotActiveException e) {
+
             e.printStackTrace();
-            throw e;
         }
-        //return 0;
+        return 0;
     }
 
 

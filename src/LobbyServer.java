@@ -23,7 +23,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     }
 
     public static void main(String[] args) {
-        String ADDRESS = "130.136.153.88";
+        String ADDRESS = "localhost";
         if (args.length > 0) ADDRESS = args[0];
         System.setProperty("java.rmi.server.hostname", ADDRESS);
         try {
@@ -52,7 +52,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             System.out.println(p.name+": "+ p.ready +" AND "+ startGame + " = " + startGame);
         }
 
-        if (startGame == true && users.size()>=2){
+        if (startGame == true && users.size() >= 1) {
             System.out.println("all ready");
             //mischia i giocatori e manda il segnale di inizio!
             ArrayList<Player> players = new ArrayList<>();
