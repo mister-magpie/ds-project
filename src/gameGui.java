@@ -1,19 +1,24 @@
-import jdk.nashorn.internal.scripts.JO;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class gameGui {
     JPanel panelMain;
