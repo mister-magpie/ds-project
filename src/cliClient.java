@@ -156,5 +156,11 @@ public class cliClient extends UnicastRemoteObject implements IPlayerServer {
     public void notifyWin(int playerIndex) throws RemoteException {
 
     }
+
+    @Override
+    public void notifyCrash(Player player) throws RemoteException
+    {
+
+    }
 }
 

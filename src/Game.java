@@ -155,7 +155,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         System.out.println("pred is:" + pred);
         Game.myself.setPredecessor( players.get(pred));
         Game.myself.setSuccessor(players.get((i+1)%players.size()));
-        gg.printText("it's " +players.get(0).name +"'s turn.",false,true);
+        //gg.printText("it's " +players.get(0).name +"'s turn.",false,true);
     }
 
     @Override
@@ -164,6 +164,13 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
         Game.myself.setToken(true);
         gg.setRollButtonEnabled(true);
+
+        for (int i = 0; i < players.size(); i++)
+        {
+            System.out.println(players.get(i).name);
+            System.out.println("--" + players.get(i).getPredecessor().name);
+            System.out.println("--" + players.get(i).getSuccessor().name);
+        }
 
         for(Player p : players)
         {
@@ -235,6 +242,9 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                     //e.printStackTrace();
                     // Devo appropriarmi del turno
                     System.out.println("PPPPPPPPPPPPPPP");
+
+                    sendCrash(myPredecessor);
+                    gg.setPieceVisible(myPredecessor.name, false);
                     if (playerMoving.equals(myPredecessor)) // Il mio predecessore è crashato senza cedermi il turno.
                     {
                         System.out.println("[" + myself.name + "]: Player moning = " + playerMoving.name + "myPredecessor = " + myPredecessor.name);
@@ -247,13 +257,31 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                             IPlayerServer ps = (IPlayerServer) reg.lookup(myself.address+"/"+myself.name);
                             ps.makeTurn();
 
-                            System.out.println("[" + myself.name + "]: " + "Chiamata la prima make");
+
                             myself.setPredecessor(myPredecessor.getPredecessor());
                             players.get(players.indexOf(myself)).setPredecessor(myPredecessor.getPredecessor());
                             players.get(myPredecessorIndex).getPredecessor().setSuccessor(players.get(mySelfIndex));
-
+                            System.out.println("-----");
+                            System.out.println("[" + myself.name + "]: " + "Chiamata la prima make");
+                            System.out.println("Myself.name    = " + myself.name);
+                            System.out.println("getPredecessor = " + myself.getPredecessor().name);
+                            System.out.println("getSuccessor   = " + myself.getSuccessor().name);
+                            System.out.println("-----");
+                            System.out.println(players.get(players.indexOf(myself)).name + " - " + players.get(players.indexOf(myself)).getPredecessor().name + " - " + players.get(players.indexOf(myself)).getSuccessor().name);
                             predecessorTimerTask.cancel();
                             predecessorTimer.cancel();
+                            System.out.println("myPrede: " + myPredecessor.name + " myself " + myself.getPredecessor().name);
+
+                            if (myself.getPredecessor().equals(myself))
+                            {
+                                JOptionPane pane   = new JOptionPane("Congratulations " + Game.myself.name + ", YOU WIN!");
+                                JDialog     dialog = pane.createDialog(frame, "Game Over!");
+                                dialog.setModal(false);
+                                dialog.setVisible(true);
+                                gg.printText("GAME OVER!\n" + myself.name + " wins!", false, true);
+                                gg.setRollButtonEnabled(false);
+                                System.out.println("Ecco che ho riscontrato di essere alone");
+                            }
 
                             System.out.println("Sono " + myself.name + " e ho stoppato il timer");
                         }
@@ -294,14 +322,17 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                                 players.get(players.indexOf(myself)).setPredecessor(predecessor);
                                 predecessor.setSuccessor(players.get(players.indexOf(myself)));
 
-                                predecessorTimerTask.cancel();
-                                predecessorTimer.cancel();
+                                //predecessorTimerTask.cancel();
+                                //predecessorTimer.cancel();
                                 break;
                             }
                             catch (RemoteException e1)
                             {
                                 //e1.printStackTrace();
 
+                                gg.setPieceVisible(predecessor.name, false);
+
+                                sendCrash(predecessor);
 
                                 if (predecessor.equals(playerMoving))
                                 {
@@ -344,6 +375,17 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                                 e1.printStackTrace();
                             }
                         } while (!predecessor.equals(myself));
+
+                        if (myself.getPredecessor().equals(myself))
+                        {
+                            JOptionPane pane   = new JOptionPane("Congratulations " + Game.myself.name + ", YOU WIN!");
+                            JDialog     dialog = pane.createDialog(frame, "Game Over!");
+                            dialog.setModal(false);
+                            dialog.setVisible(true);
+                            gg.printText("GAME OVER!\n" + myself.name + " wins!", false, true);
+                            gg.setRollButtonEnabled(false);
+                            System.out.println("Ecco che ho riscontrato di essere alone Due");
+                        }
                     }
                 }
                 catch (ServerNotActiveException e)
@@ -389,6 +431,76 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         gg.printText("GAME OVER!\n" + playerName + " wins!", false, true);
 
         gg.setRollButtonEnabled(false);
+    }
+
+    private void sendCrash(Player player)
+    {
+
+        for (Player p : players)
+        {
+            if (!myself.equals(p))
+            {
+                try
+                {
+                    Registry      reg = LocateRegistry.getRegistry(p.address);
+                    IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                    ps.notifyCrash(player);
+                }
+                catch (RemoteException e)
+                {
+                    System.out.println("\nHo lanciato " + e.getMessage() + "\n perchè non ho potuto notificare il CRASH a " + p.name + "\n");
+                }
+                catch (NotBoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                // Update because the notify is not fired to myself
+                int playerIndexOf = players.indexOf(player);
+
+                Player successor   = players.get(playerIndexOf).getSuccessor();
+                Player predecessor = players.get(playerIndexOf).getPredecessor();
+
+                predecessor.setSuccessor(successor);
+                successor.setPredecessor(predecessor);
+
+                // Keeps myself coherent with respect to the players ring
+                playerIndexOf = players.indexOf(myself);
+
+                myself.setSuccessor(players.get(playerIndexOf).getSuccessor());
+                myself.setPredecessor(players.get(playerIndexOf).getPredecessor());
+            }
+        }
+    }
+
+    @Override
+    public void notifyCrash(Player player)
+    {
+        gg.setPieceVisible(player.name, false);
+
+        int playerIndexOf = players.indexOf(player);
+
+        Player successor   = players.get(playerIndexOf).getSuccessor();
+        Player predecessor = players.get(playerIndexOf).getPredecessor();
+
+        predecessor.setSuccessor(successor);
+        successor.setPredecessor(predecessor);
+
+        // Keeps myself coherent with respect to the players ring
+        playerIndexOf = players.indexOf(myself);
+
+        myself.setSuccessor(players.get(playerIndexOf).getSuccessor());
+        myself.setPredecessor(players.get(playerIndexOf).getPredecessor());
+
+        System.out.println("Notificp il crash di " + player.name);
+        for (int i = 0; i < players.size(); i++)
+        {
+            System.out.println(players.get(i).name);
+            System.out.println("--" + players.get(i).getPredecessor().name);
+            System.out.println("--" + players.get(i).getSuccessor().name);
+        }
     }
 
     @Override

@@ -44,20 +44,13 @@ public class Player implements Serializable {
 
         int newPosition = this.position + roll;
 
-        // Check for a snake
-
-        int itemIndex = -1;
-
-        for (int k = 0; k < snakeHeads.length; k++)
-        {
-            if (snakeHeads[k] == newPosition + 1)
-            {
-                itemIndex = k;
-                break;
-            }
-        }
+        System.out.println("Position + roll = " + newPosition);
 
         // Snake found?
+
+        int itemIndex;
+
+        itemIndex = onSnake(newPosition);
 
         if (itemIndex != -1)
         {
@@ -67,18 +60,9 @@ public class Player implements Serializable {
         }
         else
         {
-            // Check for a ladder
+            // Or Ladder?
 
-            itemIndex = -1;
-
-            for (int k = 0; k < ladderStart.length; k++)
-            {
-                if (ladderStart[k] == newPosition + 1)
-                {
-                    itemIndex = k;
-                    break;
-                }
-            }
+            itemIndex = onLadder(newPosition);
 
             if (itemIndex != -1)
             {
@@ -90,12 +74,76 @@ public class Player implements Serializable {
             {
                 //players.get(i).updatePosition(r);
                 this.position += roll;
+
+
+                if (this.position >= 100)
+                {
+                    this.position = 99 - (this.position % 99);
+
+                    itemIndex = onSnake(this.position);
+
+                    if (itemIndex != -1)
+                    {
+                        int tailPosition = snakeTails[itemIndex];
+                        setPosition(tailPosition - 1);
+                    }
+                    else
+                    {
+                        itemIndex = onLadder(this.position);
+
+                        if (itemIndex != -1)
+                        {
+                            int ladderPosition = ladderEnd[itemIndex];
+                            setPosition(ladderPosition - 1);
+                        }
+                    }
+
+                    System.out.println("Ho settato = " + this.position);
+                }
             }
         }
 
         //
         System.out.println(this.name +": update position " + position);
         return position;
+    }
+
+    private int onSnake(int position)
+    {
+
+        // Check for a snake
+
+        int itemIndex = -1;
+
+        for (int k = 0; k < snakeHeads.length; k++)
+        {
+            if (snakeHeads[k] == position + 1)
+            {
+                itemIndex = k;
+                break;
+            }
+        }
+
+        return itemIndex;
+    }
+
+    private int onLadder(int position)
+    {
+
+        // Check for a ladder
+
+        int itemIndex = -1;
+
+        for (int k = 0; k < ladderStart.length; k++)
+        {
+            if (ladderStart[k] == position + 1)
+            {
+                itemIndex = k;
+                break;
+            }
+        }
+
+        return itemIndex;
     }
 
     public void setPosition(int position) {

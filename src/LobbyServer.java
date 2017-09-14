@@ -20,7 +20,7 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
     }
 
     public static void main(String[] args) {
-        String ADDRESS = "localhost";
+        String ADDRESS = "127.0.0.1";
         if (args.length > 0) ADDRESS = args[0];
         System.setProperty("java.rmi.server.hostname", ADDRESS);
         try {
@@ -49,7 +49,8 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
             System.out.println(p.name+": "+ p.ready +" AND "+ startGame + " = " + startGame);
         }
 
-        if (startGame == true && users.size() >= 1) {
+        if (startGame == true && users.size() >= 2)
+        {
             System.out.println("all ready");
             //mischia i giocatori e manda il segnale di inizio!
             ArrayList<Player> players = new ArrayList<>();
@@ -67,6 +68,26 @@ public class LobbyServer extends UnicastRemoteObject implements ILobby {
                     IPlayerServer ps = (IPlayerServer) reg.lookup(p.address+"/"+p.name);
                     ps.startGame(players, players.indexOf(p));
                 } catch (NotBoundException  e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            // Notify because timer needs to start from the beginning of the game.
+            for (Player pToNotify : players)
+            {
+                try
+                {
+                    Registry      reg = LocateRegistry.getRegistry(pToNotify.address);
+                    IPlayerServer ps  = (IPlayerServer) reg.lookup(pToNotify.address + "/" + pToNotify.name);
+                    ps.notifyTurn(players.get(0));
+                }
+                catch (RemoteException e)
+                {
+                    System.out.println("\nHo lanciato " + e.getMessage() + "\n perchè non ho potuto notificare il turno a " + pToNotify.name + "\n");
+                }
+                catch (NotBoundException e)
+                {
                     e.printStackTrace();
                 }
             }

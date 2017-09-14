@@ -11,4 +11,6 @@ public interface IPlayerServer extends Remote{
     void makeTurn() throws RemoteException;
     void notifyTurn(Player player) throws RemoteException;
     void notifyWin(int playerIndex) throws RemoteException;
+
+    void notifyCrash(Player player) throws RemoteException;
 }
