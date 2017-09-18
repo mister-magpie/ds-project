@@ -356,6 +356,44 @@ public class gameGui
 
     }
 
+    public void updateUserListWithoutPing()
+    {
+        StyledDocument     d  = listArea.getStyledDocument();
+        SimpleAttributeSet as = new SimpleAttributeSet();
+        StyleConstants.setBold(as, true);
+        listArea.setText("");
+
+        int online = 0;
+
+        for (Player player : G.players)
+        {
+            if (!player.isCrashed())
+            {
+                online++;
+            }
+        }
+
+        try
+        {
+            d.insertString(0, "Number of user: " + online + "\n---\n", as);
+
+            for (Player player : G.players)
+            {
+                if (!player.isCrashed())
+                {
+                    online++;
+
+                    d.insertString(d.getLength(), player.name + ": ", as);
+                    d.insertString(d.getLength(), player.address + "\n", null);
+                }
+            }
+        }
+        catch (BadLocationException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     private void getChatMessages()
     {
         String msg = Game.myself.msgQueue.poll();

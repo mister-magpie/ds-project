@@ -14,6 +14,7 @@ public class Player implements Serializable {
     Deque<String> msgQueue;
     private Player successor, predecessor;
     private int position;
+    boolean crash;
 
     int[] snakeHeads  = {17, 52, 57, 62, 88, 95, 97};
     int[] snakeTails  = {13, 29, 40, 22, 18, 51, 79};
@@ -29,6 +30,7 @@ public class Player implements Serializable {
         this.msgQueue = new ArrayDeque<String>(10);
         this.ready = false;
         this.position = 0;
+        this.crash = false;
     }
 
 
@@ -178,6 +180,15 @@ public class Player implements Serializable {
         this.token = token;
     }
 
+    public boolean isCrashed()
+    {
+        return crash;
+    }
+
+    public void setCrash(boolean crash)
+    {
+        this.crash = crash;
+    }
 
     @Override
     public boolean equals(Object o)

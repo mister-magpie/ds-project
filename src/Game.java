@@ -160,7 +160,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
     @Override
     public void makeTurn() throws RemoteException {
-        gg.printText("It's " + Game.myself.name+"'s turn.",false,true);
+        //gg.printText("It's " + Game.myself.name+"'s turn.",false,true);
 
         Game.myself.setToken(true);
         gg.setRollButtonEnabled(true);
@@ -175,7 +175,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         for(Player p : players)
         {
             //if (p.idx != myself.idx)
-            if(!myself.equals(p))
+            //if(!myself.equals(p))
             {
                 try
                 {
@@ -227,6 +227,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                 int mySelfIndex = players.indexOf(myself);
 
                 System.out.println("Io sono " + myself.name + " e voglio pingare il mio predecessore " + myPredecessor.name);
+                System.out.println("[" + myself.name + "]: Player moning = " + playerMoving.name + "myPredecessor = " + myPredecessor.name);
 
 
                 //System.out.println(playerMoving.name + " is moving and it's my predecessor (" + myself.name + ")");
@@ -268,8 +269,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                             System.out.println("getSuccessor   = " + myself.getSuccessor().name);
                             System.out.println("-----");
                             System.out.println(players.get(players.indexOf(myself)).name + " - " + players.get(players.indexOf(myself)).getPredecessor().name + " - " + players.get(players.indexOf(myself)).getSuccessor().name);
-                            predecessorTimerTask.cancel();
-                            predecessorTimer.cancel();
+                            //predecessorTimerTask.cancel();
+                            //predecessorTimer.cancel();
                             System.out.println("myPrede: " + myPredecessor.name + " myself " + myself.getPredecessor().name);
 
                             if (myself.getPredecessor().equals(myself))
@@ -281,6 +282,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                                 gg.printText("GAME OVER!\n" + myself.name + " wins!", false, true);
                                 gg.setRollButtonEnabled(false);
                                 System.out.println("Ecco che ho riscontrato di essere alone");
+                                predecessorTimerTask.cancel();
+                                predecessorTimer.cancel();
                             }
 
                             System.out.println("Sono " + myself.name + " e ho stoppato il timer");
@@ -352,8 +355,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                                         players.get(players.indexOf(myself)).setPredecessor(predecessor.getPredecessor());
                                         players.get(players.indexOf(predecessor.getPredecessor())).setSuccessor(players.get(players.indexOf(myself)));
 
-                                        predecessorTimerTask.cancel();
-                                        predecessorTimer.cancel();
+                                        //predecessorTimerTask.cancel();
+                                        //predecessorTimer.cancel();
                                         break;
                                     }
                                     catch (RemoteException e2)
@@ -385,6 +388,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                             gg.printText("GAME OVER!\n" + myself.name + " wins!", false, true);
                             gg.setRollButtonEnabled(false);
                             System.out.println("Ecco che ho riscontrato di essere alone Due");
+                            predecessorTimerTask.cancel();
+                            predecessorTimer.cancel();
                         }
                     }
                 }
@@ -438,7 +443,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
         for (Player p : players)
         {
-            if (!myself.equals(p))
+            //if (!myself.equals(p))
             {
                 try
                 {
@@ -455,7 +460,7 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
                     e.printStackTrace();
                 }
             }
-            else
+            /*else
             {
                 // Update because the notify is not fired to myself
                 int playerIndexOf = players.indexOf(player);
@@ -471,7 +476,9 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
 
                 myself.setSuccessor(players.get(playerIndexOf).getSuccessor());
                 myself.setPredecessor(players.get(playerIndexOf).getPredecessor());
-            }
+
+                gg.updateUserListWithoutPing();
+            }*/
         }
     }
 
@@ -481,6 +488,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
         gg.setPieceVisible(player.name, false);
 
         int playerIndexOf = players.indexOf(player);
+
+        players.get(playerIndexOf).setCrash(true);
 
         Player successor   = players.get(playerIndexOf).getSuccessor();
         Player predecessor = players.get(playerIndexOf).getPredecessor();
@@ -501,6 +510,8 @@ public class Game extends UnicastRemoteObject implements IPlayerServer{
             System.out.println("--" + players.get(i).getPredecessor().name);
             System.out.println("--" + players.get(i).getSuccessor().name);
         }
+
+        gg.updateUserListWithoutPing();
     }
 
     @Override
