@@ -30,6 +30,7 @@ public class lobbyGui
     private JTextArea   textArea1;
     private JScrollPane communicationScrollPane;
     private boolean opened;
+    Timer t;
     Game G;
 
     public lobbyGui(Game game)
@@ -97,8 +98,9 @@ public class lobbyGui
                 printText("when you are ready to start check the box", false, true);
 
                 //update cycles
+                t = new Timer();
                 G.getUsers();
-                updateList();
+                updateList(t);
                 //getUserList();
             }
         });
@@ -235,9 +237,8 @@ public class lobbyGui
         }
     }
 
-    public void updateList()
+    public void updateList(Timer t)
     {
-        Timer t = new Timer();
         t.schedule(new TimerTask()
         {
             @Override
@@ -357,7 +358,9 @@ public class lobbyGui
     {
         frame.setVisible(false);
         opened = false;
-
+        System.out.println("opened is " + opened);
+        t.cancel();
+        t.purge();
 
     }
 
