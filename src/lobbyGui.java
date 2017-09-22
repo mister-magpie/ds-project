@@ -34,6 +34,7 @@ public class lobbyGui
 
     public lobbyGui(Game game)
     {
+        opened = true;
         this.G = game;
         readyCheckBox.setEnabled(false);
 
@@ -98,7 +99,7 @@ public class lobbyGui
                 //update cycles
                 G.getUsers();
                 updateList();
-                getUserList();
+                //getUserList();
             }
         });
 
@@ -207,7 +208,7 @@ public class lobbyGui
         ArrayList<Player> users = new ArrayList<>();
         try
         {
-            users = Game.lobby.getPlayers();
+            if (opened) users = Game.lobby.getPlayers();
         }
         catch (RemoteException e)
         {
@@ -248,7 +249,7 @@ public class lobbyGui
                     getChatMessages();
                 }
             }
-        }, 0, 1000);
+        }, 500, 1000);
     }
 
     public void printText(String text, boolean append, boolean bold)
@@ -353,8 +354,9 @@ public class lobbyGui
 
     public void disposeGUI()
     {
-        opened = false;
         frame.setVisible(false);
+        opened = false;
+
 
     }
 
