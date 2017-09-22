@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="acac5b2e-f3b2-49e4-8192-198360046942" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lobbyGui.java" afterPath="$PROJECT_DIR$/src/lobbyGui.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gameGui.form" afterPath="$PROJECT_DIR$/src/gameGui.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gameGui.java" afterPath="$PROJECT_DIR$/src/gameGui.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -46,7 +46,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gameGui.form" pinned="false" current-in-tab="false">
+      <file leaf-file-name="gameGui.form" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gameGui.form">
           <provider selected="true" editor-type-id="ui-designer">
             <state />
@@ -109,16 +109,17 @@
       <file leaf-file-name="gameGui.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gameGui.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="451" column="28" lean-forward="false" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="28" />
+            <state relative-caret-position="-216">
+              <caret line="437" column="2" lean-forward="false" selection-start-line="437" selection-start-column="2" selection-end-line="437" selection-end-column="2" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <marker date="1506070488604" expanded="false" signature="18477:18511" ph="UI Designer generated code" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lobbyGui.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="lobbyGui.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lobbyGui.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="222">
@@ -190,6 +191,7 @@
       <find>dis</find>
       <find>G.get</find>
       <find>itializeTa</find>
+      <find>dispose</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -211,14 +213,14 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/ILobby.java" />
         <option value="$PROJECT_DIR$/src/lobbyGui.form" />
-        <option value="$PROJECT_DIR$/src/gameGui.form" />
         <option value="$PROJECT_DIR$/src/IPlayerServer.java" />
         <option value="$PROJECT_DIR$/src/cliClient.java" />
         <option value="$PROJECT_DIR$/src/LobbyServer.java" />
         <option value="$PROJECT_DIR$/src/Player.java" />
-        <option value="$PROJECT_DIR$/src/gameGui.java" />
         <option value="$PROJECT_DIR$/src/Game.java" />
         <option value="$PROJECT_DIR$/src/lobbyGui.java" />
+        <option value="$PROJECT_DIR$/src/gameGui.java" />
+        <option value="$PROJECT_DIR$/src/gameGui.form" />
       </list>
     </option>
   </component>
@@ -680,11 +682,18 @@
       <option name="project" value="LOCAL" />
       <updated>1506069254034</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="lobby takedown">
+      <created>1506069819099</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1506069819099</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="125512000" />
+    <option name="totallyTimeSpent" value="126207000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="768" extended-state="6" />
@@ -703,7 +712,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -886,6 +895,7 @@
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
+            <marker date="1506070488604" expanded="false" signature="18477:18511" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -968,6 +978,7 @@
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
+            <marker date="1506070488604" expanded="false" signature="18477:18511" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -1100,6 +1111,7 @@
           <caret line="240" column="33" lean-forward="false" selection-start-line="240" selection-start-column="33" selection-end-line="240" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
+            <marker date="1506070488604" expanded="false" signature="18477:18511" ph="UI Designer generated code" />
           </folding>
         </state>
       </provider>
@@ -1305,25 +1317,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameGui.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/LobbyServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="128" column="20" lean-forward="false" selection-start-line="128" selection-start-column="20" selection-end-line="128" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="451" column="28" lean-forward="false" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1370,6 +1367,22 @@
             <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gameGui.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-216">
+          <caret line="437" column="2" lean-forward="false" selection-start-line="437" selection-start-column="2" selection-end-line="437" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1506070488604" expanded="false" signature="18477:18511" ph="UI Designer generated code" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gameGui.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
       </provider>
     </entry>
   </component>

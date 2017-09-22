@@ -20,24 +20,22 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class gameGui
-{
+public class gameGui {
     static HashMap<String, JLabel> pieces;
-    JPanel       panelMain;
-    JTextField   messageField;
-    JButton      sendButton;
-    JButton      rollButton;
-    JLabel       diceLabel;
-    JPanel       gamePanel;
-    JTextPane    listArea;
-    JTextPane    chatArea;
+    JPanel panelMain;
+    JTextField messageField;
+    JButton sendButton;
+    JButton rollButton;
+    JLabel diceLabel;
+    JPanel gamePanel;
+    JTextPane listArea;
+    JTextPane chatArea;
     JLayeredPane gameMap;
-    Game         G;
-    JFrame       frame;
+    Game G;
+    JFrame frame;
     private JScrollPane chatAreaScrollPane;
 
-    public gameGui(Game game)
-    {
+    public gameGui(Game game) {
         this.G = game;
         gamePanel.setLayout(null);
         gamePanel.setMinimumSize(new Dimension(800, 600));
@@ -50,8 +48,8 @@ public class gameGui
 
         gamePanel.add(gameMap);
 
-        ImageIcon bg      = new ImageIcon(gameMap.getClass().getResource("/snakesandladders.png"));
-        JLabel    bgLabel = new JLabel(bg);
+        ImageIcon bg = new ImageIcon(gameMap.getClass().getResource("/snakesandladders.png"));
+        JLabel bgLabel = new JLabel(bg);
         bgLabel.setBounds(0, 0, 800, 600);
         gameMap.add(bgLabel, new Integer(0));
 
@@ -62,86 +60,67 @@ public class gameGui
         //updateList();
 
         //tira dado
-        rollButton.addActionListener(new ActionListener()
-        {
+        rollButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent)
-            {
+            public void actionPerformed(ActionEvent actionEvent) {
                 int dice = new Random().nextInt(6) + 1;
                 //int dice = 99;
                 //chatArea.append("\n" + G.myself.name + " rolled a " + String.valueOf(dice));
                 move(Game.myself.idx, Game.myself.updatePosition(dice));
 
-                for (Player p : G.getPlayers())
-                {
-                    try
-                    {
-                        Registry      reg = LocateRegistry.getRegistry(p.address);
-                        IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                for (Player p : G.getPlayers()) {
+                    try {
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
                         ps.updatePosition(Game.myself.idx, dice);
-                    }
-                    catch (NotBoundException | RemoteException e)
-                    {
+                    } catch (NotBoundException | RemoteException e) {
                         //e.printStackTrace();
                         System.out.println("Ho lanciato " + e + " perchè ho fallito l'updatePosition su " + p.name);
                     }
                 }
                 //passa il turno
                 Player suc = null;
-                try
-                {
+                try {
                     Game.myself.setToken(false);
                     rollButton.setEnabled(false);
 
                     suc = Game.myself.getSuccessor();
 
-                    if (suc == null)
-                    {
+                    if (suc == null) {
                         System.out.println("nosuc");
                     }
 
-                    Registry      reg = LocateRegistry.getRegistry(suc.address);
-                    IPlayerServer ps  = (IPlayerServer) reg.lookup(suc.address + "/" + suc.name);
+                    Registry reg = LocateRegistry.getRegistry(suc.address);
+                    IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address + "/" + suc.name);
                     ps.makeTurn();
 
-                }
-                catch (RemoteException e)
-                {
+                } catch (RemoteException e) {
                     //e.printStackTrace();
 
                     suc = suc.getSuccessor();
 
-                    do
-                    {
+                    do {
                         Game.myself.setSuccessor(G.players.get(G.players.indexOf(suc)));
                         G.players.get(G.players.indexOf(suc)).setPredecessor(G.players.get(G.players.indexOf(Game.myself)));
 
-                        try
-                        {
-                            Registry      reg = LocateRegistry.getRegistry(suc.address);
-                            IPlayerServer ps  = (IPlayerServer) reg.lookup(suc.address + "/" + suc.name);
+                        try {
+                            Registry reg = LocateRegistry.getRegistry(suc.address);
+                            IPlayerServer ps = (IPlayerServer) reg.lookup(suc.address + "/" + suc.name);
 
                             ps.makeTurn();
                             break; // Successor found
-                        }
-                        catch (RemoteException e1)
-                        {
+                        } catch (RemoteException e1) {
                             suc = suc.getSuccessor();
-                        }
-                        catch (NotBoundException e1)
-                        {
+                        } catch (NotBoundException e1) {
                             e1.printStackTrace();
                         }
                     } while (!suc.equals(Game.myself));
-                }
-                catch (NotBoundException e)
-                {
+                } catch (NotBoundException e) {
                     e.printStackTrace();
                 }
                 rollButton.setEnabled(false);
 
-                if (suc.equals(Game.myself))
-                {
+                if (suc.equals(Game.myself)) {
                     // Alone
                     JOptionPane.showMessageDialog(frame, "Alone!");
                     System.out.println("Mi pianto qui");
@@ -149,21 +128,15 @@ public class gameGui
 
                 int position = Game.myself.getPosition();
 
-                if (position == 99)
-                {
-                    for (Player p : G.getPlayers())
-                    {
-                        if (!p.equals(Game.myself))
-                        {
-                            try
-                            {
-                                Registry      reg = LocateRegistry.getRegistry(p.address);
-                                IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                if (position == 99) {
+                    for (Player p : G.getPlayers()) {
+                        if (!p.equals(Game.myself)) {
+                            try {
+                                Registry reg = LocateRegistry.getRegistry(p.address);
+                                IPlayerServer ps = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
                                 ps.notifyWin(Game.myself.idx);
                                 //System.out.println("Ho terminato di notificare la mia vittoria");
-                            }
-                            catch (RemoteException | NotBoundException e)
-                            {
+                            } catch (RemoteException | NotBoundException e) {
                                 e.printStackTrace();
                             }
                         }
@@ -171,8 +144,8 @@ public class gameGui
 
                     printText(Game.myself.name + ", WINS!", false, true);
 
-                    JOptionPane pane   = new JOptionPane("Congratulations " + Game.myself.name + ", YOU WIN!");
-                    JDialog     dialog = pane.createDialog(frame, "Game Over!");
+                    JOptionPane pane = new JOptionPane("Congratulations " + Game.myself.name + ", YOU WIN!");
+                    JDialog dialog = pane.createDialog(frame, "Game Over!");
                     dialog.setModal(false);
                     dialog.setVisible(true);
                 }
@@ -180,24 +153,18 @@ public class gameGui
 
             }
         });
-        messageField.addActionListener(new ActionListener()
-        {
+        messageField.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent)
-            {
+            public void actionPerformed(ActionEvent actionEvent) {
                 String msg = messageField.getText();
                 System.out.println("chattxt.msg->" + msg);
                 messageField.setText("");
-                for (Player p : G.players)
-                {
-                    try
-                    {
-                        Registry      reg = LocateRegistry.getRegistry(p.address);
-                        IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                for (Player p : G.players) {
+                    try {
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
                         ps.recieveMessage(Game.myself.name, msg);
-                    }
-                    catch (NotBoundException | RemoteException e)
-                    {
+                    } catch (NotBoundException | RemoteException e) {
                         System.out.println(p.name + " not responding");
                         //e.printStackTrace();
                     }
@@ -205,50 +172,38 @@ public class gameGui
             }
         });
 
-        messageField.getDocument().addDocumentListener(new DocumentListener()
-        {
+        messageField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent documentEvent)
-            {
-                if (!sendButton.isEnabled())
-                {
+            public void insertUpdate(DocumentEvent documentEvent) {
+                if (!sendButton.isEnabled()) {
                     sendButton.setEnabled(true);
                 }
             }
 
             @Override
-            public void removeUpdate(DocumentEvent documentEvent)
-            {
-                if (messageField.getText().isEmpty())
-                {
+            public void removeUpdate(DocumentEvent documentEvent) {
+                if (messageField.getText().isEmpty()) {
                     sendButton.setEnabled(false);
                 }
             }
 
             @Override
-            public void changedUpdate(DocumentEvent documentEvent)
-            {
+            public void changedUpdate(DocumentEvent documentEvent) {
 
             }
         });
-        sendButton.addActionListener(new ActionListener()
-        {
+        sendButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent)
-            {
+            public void actionPerformed(ActionEvent actionEvent) {
                 String msg = messageField.getText();
                 System.out.println("chattxt.msg->" + msg);
                 messageField.setText("");
-                for (Player p : G.players)
-                {
-                    try
-                    {
-                        Registry      reg = LocateRegistry.getRegistry(p.address);
-                        IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+                for (Player p : G.players) {
+                    try {
+                        Registry reg = LocateRegistry.getRegistry(p.address);
+                        IPlayerServer ps = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
                         ps.recieveMessage(Game.myself.name, msg);
-                    }
-                    catch (NotBoundException | RemoteException e)
-                    {
+                    } catch (NotBoundException | RemoteException e) {
                         System.out.println(p.name + " not responding");
                         //e.printStackTrace();
                     }
@@ -257,17 +212,15 @@ public class gameGui
         });
     }
 
-    public HashMap<String, JLabel> initPieces()
-    {
+    public HashMap<String, JLabel> initPieces() {
         System.out.println("init pieces");
         HashMap<String, JLabel> pcs = new HashMap<String, JLabel>();
-        for (Player p : G.players)
-        {
+        for (Player p : G.players) {
 
             //System.out.println(p.name);
 
             ImageIcon icon = new ImageIcon(gameMap.getClass().getResource("/pawn" + p.idx + ".png"));
-            JLabel    pwn  = new JLabel(icon);
+            JLabel pwn = new JLabel(icon);
             pwn.setBounds(30, 525, 80, 60);
             pwn.setText(p.name);
 
@@ -278,8 +231,7 @@ public class gameGui
         return pcs;
     }
 
-    public void move(int i, int position)
-    {
+    public void move(int i, int position) {
 
         Point p = pieces.get(G.players.get(i).name).getLocation();
         System.out.println("new position is " + (position + 1));
@@ -288,12 +240,9 @@ public class gameGui
         int y = (position) / 10;
 
         p.y = 525 - 60 * y;
-        if (y % 2 == 0)
-        {
+        if (y % 2 == 0) {
             p.x = 20 + 80 * x;
-        }
-        else
-        {
+        } else {
             p.x = 740 - 80 * x;
         }
 /*
@@ -307,184 +256,130 @@ public class gameGui
         pieces.get(G.players.get(i).name).setLocation(p);
     }
 
-    private void updateUserList()
-    {
-        StyledDocument     d  = listArea.getStyledDocument();
+    private void updateUserList() {
+        StyledDocument d = listArea.getStyledDocument();
         SimpleAttributeSet as = new SimpleAttributeSet();
         StyleConstants.setBold(as, true);
         listArea.setText("");
-        try
-        {
+        try {
             d.insertString(0, "number of user: " + G.players.size() + "\n---\n", as);
-        }
-        catch (BadLocationException e)
-        {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
-        for (Player p : G.players)
-        {
-            try
-            {
-                Registry      reg = LocateRegistry.getRegistry(p.address);
-                IPlayerServer ps  = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
+        for (Player p : G.players) {
+            try {
+                Registry reg = LocateRegistry.getRegistry(p.address);
+                IPlayerServer ps = (IPlayerServer) reg.lookup(p.address + "/" + p.name);
                 ps.ping(Game.myself.name);
 
                 d.insertString(d.getLength(), p.name + ": ", as);
                 d.insertString(d.getLength(), p.address + "\n", null);
 
                 //t = t.concat("\n" +p.name + " - " + p.address);
-            }
-            catch (NotBoundException e)
-            {
+            } catch (NotBoundException e) {
                 e.printStackTrace();
-            }
-            catch (RemoteException e)
-            {
+            } catch (RemoteException e) {
                 System.out.println(p.name + " offline");
                 G.players.remove(p);
                 //e.printStackTrace();
-            }
-            catch (BadLocationException e)
-            {
+            } catch (BadLocationException e) {
                 e.printStackTrace();
-            }
-            catch (ServerNotActiveException e)
-            {
+            } catch (ServerNotActiveException e) {
                 e.printStackTrace();
             }
         }
 
     }
 
-    public void updateUserListWithoutPing()
-    {
-        StyledDocument     d  = listArea.getStyledDocument();
+    public void updateUserListWithoutPing() {
+        StyledDocument d = listArea.getStyledDocument();
         SimpleAttributeSet as = new SimpleAttributeSet();
         StyleConstants.setBold(as, true);
         listArea.setText("");
 
         int online = 0;
 
-        for (Player player : G.players)
-        {
-            if (!player.isCrashed())
-            {
+        for (Player player : G.players) {
+            if (!player.isCrashed()) {
                 online++;
             }
         }
 
-        try
-        {
+        try {
             d.insertString(0, "Number of user: " + online + "\n---\n", as);
 
-            for (Player player : G.players)
-            {
-                if (!player.isCrashed())
-                {
+            for (Player player : G.players) {
+                if (!player.isCrashed()) {
                     online++;
 
                     d.insertString(d.getLength(), player.name + ": ", as);
                     d.insertString(d.getLength(), player.address + "\n", null);
                 }
             }
-        }
-        catch (BadLocationException e)
-        {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
 
-    private void getChatMessages()
-    {
+    private void getChatMessages() {
         String msg = Game.myself.msgQueue.poll();
-        if (msg != null)
-        {
+        if (msg != null) {
             System.out.println("gettin' msg -> " + msg);
             printText(msg, false, false);
         }
     }
 
 
-    public void printText(String text, boolean append, boolean bold)
-    {
+    public void printText(String text, boolean append, boolean bold) {
         StyledDocument d = chatArea.getStyledDocument();
         //System.out.println("printtextcall");
-        if (!append)
-        {
+        if (!append) {
             text = "\n" + text;
         }
 
         SimpleAttributeSet as = new SimpleAttributeSet();
         StyleConstants.setBold(as, true);
 
-        try
-        {
-            if (!bold)
-            {
+        try {
+            if (!bold) {
                 d.insertString(d.getLength(), text, null);
             }
-            if (bold)
-            {
+            if (bold) {
                 d.insertString(d.getLength(), text, as);
             }
-        }
-        catch (BadLocationException e)
-        {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
         //chatArea.append(text);
         chatArea.setCaretPosition(chatArea.getDocument().getLength());
     }
 
-    public void setRollButtonEnabled(boolean enabled)
-    {
+    public void setRollButtonEnabled(boolean enabled) {
         rollButton.setEnabled(enabled);
     }
 
-    public void setPieceVisible(String playerName, boolean visible)
-    {
-        if (pieces.containsKey(playerName))
-        {
+    public void setPieceVisible(String playerName, boolean visible) {
+        if (pieces.containsKey(playerName)) {
             pieces.get(playerName).setVisible(visible);
         }
     }
 
-    public JFrame initializeGUI()
-    {
+    public JFrame initializeGUI() {
 
-        /*for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
-                try {
-                    UIManager.setLookAndFeel(info.getClassName());
-                } catch (ClassNotFoundException | IllegalAccessException | UnsupportedLookAndFeelException | InstantiationException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-        }
-*/
-        try
-        {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // If Nimbus is not available, you can set the GUI to another look and feel.
             // Set cross-platform Java L&F (also called "Metal")
-            try
-            {
+            try {
                 UIManager.setLookAndFeel(
                         UIManager.getCrossPlatformLookAndFeelClassName());
-            }
-            catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1)
-            {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
                 e1.printStackTrace();
             }
         }
@@ -493,6 +388,7 @@ public class gameGui
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
         /*chatAreaScrollPane.setWheelScrollingEnabled(true);*/
 
@@ -506,11 +402,9 @@ public class gameGui
         chatArea.setEditable(false);
         listArea.setEditable(false);
 
-        frame.addWindowListener(new WindowAdapter()
-        {
+        frame.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent windowEvent)
-            {
+            public void windowClosing(WindowEvent windowEvent) {
                 System.out.println("chiudo tutto");
 
 
@@ -522,14 +416,11 @@ public class gameGui
         return frame;
     }
 
-    public void updateGui()
-    {
+    public void updateGui() {
         Timer t = new Timer();
-        t.schedule(new TimerTask()
-        {
+        t.schedule(new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 //getUserList(); //not needed as the list can be update when someone becomes unreachable. no new player will connect
                 //update chat
                 getChatMessages();
@@ -551,8 +442,7 @@ public class gameGui
      *
      * @noinspection ALL
      */
-    private void $$$setupUI$$$()
-    {
+    private void $$$setupUI$$$() {
         panelMain = new JPanel();
         panelMain.setLayout(new GridBagLayout());
         gamePanel = new JPanel();
@@ -565,7 +455,7 @@ public class gameGui
         gbc.gridheight = 2;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.ipadx = 800;
         gbc.ipady = 600;
         panelMain.add(gamePanel, gbc);
@@ -623,8 +513,7 @@ public class gameGui
     /**
      * @noinspection ALL
      */
-    public JComponent $$$getRootComponent$$$()
-    {
+    public JComponent $$$getRootComponent$$$() {
         return panelMain;
     }
 }
