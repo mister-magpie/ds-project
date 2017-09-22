@@ -243,6 +243,7 @@ public class lobbyGui
             @Override
             public void run() {
                 if (opened) {
+                    System.out.println("updateList!");
                     //update userlist
                     getUserList();
                     //update chat
