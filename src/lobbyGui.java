@@ -29,7 +29,7 @@ public class lobbyGui
     private JTextField  usernameField;
     private JTextArea   textArea1;
     private JScrollPane communicationScrollPane;
-    private boolean opened;
+    static boolean opened;
     Timer t;
     Game G;
 
