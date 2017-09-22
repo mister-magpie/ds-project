@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="acac5b2e-f3b2-49e4-8192-198360046942" name="Default" comment="lobby takedown">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$7.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui$7.class" />
+    <list default="true" id="acac5b2e-f3b2-49e4-8192-198360046942" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ds-project/lobbyGui.class" afterPath="$PROJECT_DIR$/out/production/ds-project/lobbyGui.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lobbyGui.java" afterPath="$PROJECT_DIR$/src/lobbyGui.java" />
@@ -36,8 +35,8 @@
       <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+            <state relative-caret-position="205">
+              <caret line="101" column="21" lean-forward="false" selection-start-line="101" selection-start-column="21" selection-end-line="101" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6712#17146#0" expanded="true" />
@@ -110,8 +109,8 @@
       <file leaf-file-name="gameGui.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gameGui.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2378">
-              <caret line="182" column="15" lean-forward="false" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="15" />
+            <state relative-caret-position="120">
+              <caret line="451" column="28" lean-forward="false" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -122,8 +121,8 @@
       <file leaf-file-name="lobbyGui.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/lobbyGui.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="30" column="39" lean-forward="false" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
+            <state relative-caret-position="222">
+              <caret line="362" column="10" lean-forward="false" selection-start-line="362" selection-start-column="10" selection-end-line="362" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1463#1649#0" expanded="true" />
@@ -143,9 +142,9 @@
                 <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
                 <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
                 <element signature="method#$$$setupUI$$$#0;class#lobbyGui#0" expanded="false" />
-                <element signature="e#14750#14751#0" expanded="true" />
-                <marker date="1506069024801" expanded="false" signature="14749:14760" ph=" { " />
-                <marker date="1506069024801" expanded="false" signature="14777:14783" ph=" }" />
+                <element signature="e#14754#14755#0" expanded="true" />
+                <marker date="1506069797841" expanded="false" signature="14753:14764" ph=" { " />
+                <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
               </folding>
             </state>
           </provider>
@@ -190,6 +189,7 @@
       <find>message</find>
       <find>dis</find>
       <find>G.get</find>
+      <find>itializeTa</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -673,14 +673,22 @@
       <option name="project" value="LOCAL" />
       <updated>1506068665732</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="lobby takedown">
+      <created>1506069254034</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1506069254034</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124949000" />
+    <option name="totallyTimeSpent" value="125512000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="768" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -690,7 +698,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32779455" sideWeight="0.50292826" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.326284" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.326284" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32779455" sideWeight="0.49707174" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -830,9 +838,9 @@
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="method#$$$setupUI$$$#0;class#lobbyGui#0" expanded="false" />
-            <element signature="e#14750#14751#0" expanded="true" />
-            <marker date="1506069024801" expanded="false" signature="14749:14760" ph=" { " />
-            <marker date="1506069024801" expanded="false" signature="14777:14783" ph=" }" />
+            <element signature="e#14754#14755#0" expanded="true" />
+            <marker date="1506069797841" expanded="false" signature="14753:14764" ph=" { " />
+            <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -919,9 +927,9 @@
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="method#$$$setupUI$$$#0;class#lobbyGui#0" expanded="false" />
-            <element signature="e#14750#14751#0" expanded="true" />
-            <marker date="1506069024801" expanded="false" signature="14749:14760" ph=" { " />
-            <marker date="1506069024801" expanded="false" signature="14777:14783" ph=" }" />
+            <element signature="e#14754#14755#0" expanded="true" />
+            <marker date="1506069797841" expanded="false" signature="14753:14764" ph=" { " />
+            <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -1004,9 +1012,9 @@
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="method#$$$setupUI$$$#0;class#lobbyGui#0" expanded="false" />
-            <element signature="e#14750#14751#0" expanded="true" />
-            <marker date="1506069024801" expanded="false" signature="14749:14760" ph=" { " />
-            <marker date="1506069024801" expanded="false" signature="14777:14783" ph=" }" />
+            <element signature="e#14754#14755#0" expanded="true" />
+            <marker date="1506069797841" expanded="false" signature="14753:14764" ph=" { " />
+            <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -1058,9 +1066,9 @@
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="method#$$$setupUI$$$#0;class#lobbyGui#0" expanded="false" />
-            <element signature="e#14750#14751#0" expanded="true" />
-            <marker date="1506069024801" expanded="false" signature="14749:14760" ph=" { " />
-            <marker date="1506069024801" expanded="false" signature="14777:14783" ph=" }" />
+            <element signature="e#14754#14755#0" expanded="true" />
+            <marker date="1506069797841" expanded="false" signature="14753:14764" ph=" { " />
+            <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -1141,9 +1149,9 @@
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="method#$$$setupUI$$$#0;class#lobbyGui#0" expanded="false" />
-            <element signature="e#14750#14751#0" expanded="true" />
-            <marker date="1506069024801" expanded="false" signature="14749:14760" ph=" { " />
-            <marker date="1506069024801" expanded="false" signature="14777:14783" ph=" }" />
+            <element signature="e#14754#14755#0" expanded="true" />
+            <marker date="1506069797841" expanded="false" signature="14753:14764" ph=" { " />
+            <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -1302,28 +1310,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2378">
-          <caret line="182" column="15" lean-forward="false" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6712#17146#0" expanded="true" />
-            <element signature="e#17145#17146#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/LobbyServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
@@ -1334,10 +1320,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/gameGui.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="451" column="28" lean-forward="false" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="101" column="21" lean-forward="false" selection-start-line="101" selection-start-column="21" selection-end-line="101" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6712#17146#0" expanded="true" />
+            <element signature="e#17145#17146#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/lobbyGui.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="30" column="39" lean-forward="false" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
+        <state relative-caret-position="222">
+          <caret line="362" column="10" lean-forward="false" selection-start-line="362" selection-start-column="10" selection-end-line="362" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1463#1649#0" expanded="true" />
@@ -1357,9 +1365,9 @@
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="initializer##0;class#lobbyGui#0" expanded="true" />
             <element signature="method#$$$setupUI$$$#0;class#lobbyGui#0" expanded="false" />
-            <element signature="e#14750#14751#0" expanded="true" />
-            <marker date="1506069024801" expanded="false" signature="14749:14760" ph=" { " />
-            <marker date="1506069024801" expanded="false" signature="14777:14783" ph=" }" />
+            <element signature="e#14754#14755#0" expanded="true" />
+            <marker date="1506069797841" expanded="false" signature="14753:14764" ph=" { " />
+            <marker date="1506069797841" expanded="false" signature="14781:14787" ph=" }" />
           </folding>
         </state>
       </provider>

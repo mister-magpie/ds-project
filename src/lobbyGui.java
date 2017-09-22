@@ -359,8 +359,8 @@ public class lobbyGui
         frame.setVisible(false);
         opened = false;
         System.out.println("opened is " + opened);
-        t.cancel();
-        t.purge();
+        //t.cancel();
+        //t.purge();
 
     }
 
