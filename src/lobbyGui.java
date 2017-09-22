@@ -29,6 +29,7 @@ public class lobbyGui
     private JTextField  usernameField;
     private JTextArea   textArea1;
     private JScrollPane communicationScrollPane;
+    private boolean opened;
     Game G;
 
     public lobbyGui(Game game)
@@ -239,12 +240,13 @@ public class lobbyGui
         t.schedule(new TimerTask()
         {
             @Override
-            public void run()
-            {
-                //update userlist
-                getUserList();
-                //update chat
-                getChatMessages();
+            public void run() {
+                if (opened) {
+                    //update userlist
+                    getUserList();
+                    //update chat
+                    getChatMessages();
+                }
             }
         }, 0, 1000);
     }
@@ -351,6 +353,7 @@ public class lobbyGui
 
     public void disposeGUI()
     {
+        opened = false;
         frame.setVisible(false);
 
     }
